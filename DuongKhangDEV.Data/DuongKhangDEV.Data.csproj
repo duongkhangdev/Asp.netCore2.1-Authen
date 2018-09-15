@@ -10,4 +10,9 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DuongKhangDEV.Infrastructure\DuongKhangDEV.Infrastructure.csproj" />
+    <ProjectReference Include="..\DuongKhangDEV.Utilities\DuongKhangDEV.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>

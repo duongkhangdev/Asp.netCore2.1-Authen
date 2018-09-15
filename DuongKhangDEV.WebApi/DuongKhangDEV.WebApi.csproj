@@ -14,4 +14,12 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DuongKhangDEV.Application\DuongKhangDEV.Application.csproj" />
+    <ProjectReference Include="..\DuongKhangDEV.Data.EF\DuongKhangDEV.Data.EF.csproj" />
+    <ProjectReference Include="..\DuongKhangDEV.Data\DuongKhangDEV.Data.csproj" />
+    <ProjectReference Include="..\DuongKhangDEV.Infrastructure\DuongKhangDEV.Infrastructure.csproj" />
+    <ProjectReference Include="..\DuongKhangDEV.Utilities\DuongKhangDEV.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
