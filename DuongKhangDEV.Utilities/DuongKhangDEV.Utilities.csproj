@@ -4,11 +4,4 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Constants\" />
-    <Folder Include="Dtos\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>
