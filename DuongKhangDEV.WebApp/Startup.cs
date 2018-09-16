@@ -20,6 +20,8 @@ using AutoMapper;
 using DuongKhangDEV.WebApp.Services;
 using DuongKhangDEV.WebApp.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace DuongKhangDEV.WebApp
 {
@@ -206,7 +208,21 @@ namespace DuongKhangDEV.WebApp
             }
 
             app.UseHttpsRedirection();
+
+            // For wwwroot directory
             app.UseStaticFiles();
+
+            // Add support for node_modules but only during development **temporary**
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseStaticFiles(new StaticFileOptions()
+            //    {
+            //        FileProvider = new PhysicalFileProvider(
+            //          Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
+            //        RequestPath = new PathString("/vendor")
+            //    });
+            //}
+
             app.UseCookiePolicy();
 
             app.UseAuthentication();
@@ -220,6 +236,9 @@ namespace DuongKhangDEV.WebApp
                 // Admin
                 routes.MapRoute(name: "areaRoute",
                     template: "{area:exists}/{controller=Login}/{action=Index}/{id?}");
+
+                //routes.MapRoute(name: "areaRoute",
+                //    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
