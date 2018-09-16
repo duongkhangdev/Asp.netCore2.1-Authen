@@ -213,15 +213,15 @@ namespace DuongKhangDEV.WebApp
             app.UseStaticFiles();
 
             // Add support for node_modules but only during development **temporary**
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseStaticFiles(new StaticFileOptions()
-            //    {
-            //        FileProvider = new PhysicalFileProvider(
-            //          Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
-            //        RequestPath = new PathString("/vendor")
-            //    });
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(
+                      Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
+                    RequestPath = new PathString("/vendor")
+                });
+            }
 
             app.UseCookiePolicy();
 
