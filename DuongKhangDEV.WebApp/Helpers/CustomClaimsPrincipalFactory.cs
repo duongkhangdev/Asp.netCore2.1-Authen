@@ -27,6 +27,8 @@ namespace DuongKhangDEV.WebApp.Helpers
         {
             var principal = await base.CreateAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
+
+            // Add your claims here
             ((ClaimsIdentity)principal.Identity).AddClaims(new[]
             {
                 new Claim("UserId", user.Id.ToString()),

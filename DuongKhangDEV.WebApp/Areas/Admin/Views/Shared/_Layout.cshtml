@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using DuongKhangDEV.WebApp.Extensions;
+@using System.Security.Claims;
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -53,10 +55,13 @@
                 <a class="nav-link" href="#">Dashboard</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link" href="#">Users</a>
+                <a class="nav-link" href="#">@User.GetSpecificClaim("FullName")</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link" href="#">Settings</a>
+                <a class="nav-link" href="#">
+                    @{var fullName = ((ClaimsIdentity)User.Identity).GetSpecificClaim("FullName");}
+                    @fullName
+                </a>
             </li>
         </ul>
         <ul class="nav navbar-nav ml-auto">
@@ -713,7 +718,9 @@
     </footer>
     <!-- CoreUI and necessary plugins-->
     <script src="~/admin-side/vendors/jquery/js/jquery.min.js"></script>
-
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/admin-side/vendors/popper.js/js/popper.min.js"></script>
     <script src="~/admin-side/vendors/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin-side/vendors/pace-progress/js/pace.min.js"></script>

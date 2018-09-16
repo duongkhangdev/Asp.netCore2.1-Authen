@@ -22,6 +22,9 @@ using DuongKhangDEV.WebApp.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using DuongKhangDEV.WebApp.Helpers;
+using DuongKhangDEV.Application.Interfaces.SystemCatalog;
+using DuongKhangDEV.Application.Implementation.SystemCatalog;
 
 namespace DuongKhangDEV.WebApp
 {
@@ -88,14 +91,15 @@ namespace DuongKhangDEV.WebApp
 
             #endregion
 
+            services.AddAutoMapper();  //AutoMapper.Extensions.Microsoft.DependencyInjection
+
             //Register for DI
             services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
             #region Auto Mapper
-
-            services.AddAutoMapper();  //AutoMapper.Extensions.Microsoft.DependencyInjection
+            
             services.AddSingleton(Mapper.Configuration);
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
@@ -108,7 +112,7 @@ namespace DuongKhangDEV.WebApp
 
             services.AddTransient<DbInitializer>();
 
-            //services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>(); // Hiển thị thông tin đăng nhập qua Claim
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>(); // Hiển thị thông tin đăng nhập qua Claim
 
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
@@ -145,9 +149,9 @@ namespace DuongKhangDEV.WebApp
 
             #region System
 
-            //services.AddTransient<IUserService, UserService>();
-            //services.AddTransient<IRoleService, RoleService>();
-            //services.AddTransient<IFunctionService, FunctionService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IFunctionService, FunctionService>();
             //services.AddTransient<INewsletterService, NewsletterService>();
             //services.AddTransient<IMenuGroupService, MenuGroupService>();
             //services.AddTransient<IMenuService, MenuService>();

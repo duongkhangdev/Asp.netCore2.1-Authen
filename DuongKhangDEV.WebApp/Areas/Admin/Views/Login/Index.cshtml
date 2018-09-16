@@ -1,5 +1,5 @@
-﻿
-@{
+﻿@{
+    ViewData["Title"] = "Đăng nhập hệ thống";
     Layout = null;
 }
 
@@ -14,7 +14,7 @@
     <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>CoreUI Free Bootstrap Admin Template</title>
+    <title>CoreUI Login - DuongKhangDEV</title>
     <!-- Icons-->
     <link href="~/admin-side/vendors/core/icons/css/coreui-icons.min.css" rel="stylesheet">
     <link href="~/admin-side/vendors/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
@@ -37,6 +37,9 @@
         // Bootstrap ID
         gtag('config', 'UA-118965717-5');
     </script>
+
+    <!-- metro.css -->
+    <link href="~/lib/notifyjs/dist/styles/metro/notify-metro.css" rel="stylesheet" />
 </head>
 <body class="app flex-row align-items-center">
     <div class="container">
@@ -45,32 +48,35 @@
                 <div class="card-group">
                     <div class="card p-4">
                         <div class="card-body">
-                            <h1>Login</h1>
-                            <p class="text-muted">Sign In to your account</p>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="icon-user"></i>
-                                    </span>
+                            <form id="frmLogin">
+                                @Html.AntiForgeryToken()
+                                <h1>Đăng nhập</h1>
+                                <p class="text-muted">Đăng nhập vào quản trị</p>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="icon-user"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control" type="text" id="txtUserName" value="admin" name="userName" placeholder="Tài khoản" required="">
                                 </div>
-                                <input class="form-control" type="text" placeholder="Username">
-                            </div>
-                            <div class="input-group mb-4">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="icon-lock"></i>
-                                    </span>
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="icon-lock"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control" type="password" id="txtPassword" value="123654$" name="password" placeholder="Mật khẩu" required="">
                                 </div>
-                                <input class="form-control" type="password" placeholder="Password">
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <button class="btn btn-primary px-4" type="button">Login</button>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button class="btn btn-primary px-4" type="button" id="btnLogin" href="#">Đăng nhập</button>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button class="btn btn-link px-0" type="button" href="#">Quên mật khẩu?</button>
+                                    </div>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <button class="btn btn-link px-0" type="button">Forgot password?</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
@@ -88,10 +94,24 @@
     </div>
     <!-- CoreUI and necessary plugins-->
     <script src="~/admin-side/vendors/jquery/js/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/admin-side/vendors/popper.js/js/popper.min.js"></script>
     <script src="~/admin-side/vendors/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin-side/vendors/pace-progress/js/pace.min.js"></script>
     <script src="~/admin-side/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
     <script src="~/admin-side/vendors/core/coreui/js/coreui.min.js"></script>
+
+    <script src="~/lib/notifyjs/dist/notify.js"></script>
+    <script src="~/lib/notifyjs/dist/styles/metro/notify-metro.js"></script>
+
+    <script src="~/admin-app/shared/tedu.js"></script>
+    <script src="~/admin-app/controllers/login/index.js" asp-append-version="true"></script>
+
+    <script>
+        var login = new loginController();
+        login.initialize();
+    </script>
 </body>
 </html>

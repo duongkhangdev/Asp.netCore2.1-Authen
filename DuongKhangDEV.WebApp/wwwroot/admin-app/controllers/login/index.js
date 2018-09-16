@@ -17,6 +17,7 @@
                 }
             }
         });
+
         $('#btnLogin').on('click', function (e) {
             if ($('#frmLogin').valid()) {
                 e.preventDefault();
