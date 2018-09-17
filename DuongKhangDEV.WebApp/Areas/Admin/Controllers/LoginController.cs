@@ -62,5 +62,13 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
             // If we got this far, something failed, redisplay form
             return new ObjectResult(new GenericResult(false, model));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            return RedirectToAction(nameof(LoginController.Index), "Login");
+        }
     }
 }
