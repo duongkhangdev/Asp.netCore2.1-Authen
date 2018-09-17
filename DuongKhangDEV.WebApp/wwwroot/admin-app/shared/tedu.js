@@ -1,6 +1,6 @@
 ﻿var tedu = {
     configs: {
-        pageSize: 10,
+        pageSize: 3,
         pageIndex: 1
     },
     notify: function (message, type) {

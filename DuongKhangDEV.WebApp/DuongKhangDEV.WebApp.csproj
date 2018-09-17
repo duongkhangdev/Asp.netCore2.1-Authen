@@ -20,11 +20,14 @@
     <Folder Include="Logs\" />
     <Folder Include="Middleware\" />
     <Folder Include="wwwroot\admin-app\controllers\home\" />
-    <Folder Include="wwwroot\admin-app\controllers\function\" />
     <Folder Include="wwwroot\admin-app\controllers\footer\" />
     <Folder Include="wwwroot\admin-app\controllers\page\" />
-    <Folder Include="wwwroot\admin-app\controllers\role\" />
-    <Folder Include="wwwroot\admin-app\controllers\user\" />
+    <Folder Include="wwwroot\templates\" />
+    <Folder Include="wwwroot\uploaded\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\ckeditor\.github\ISSUE_TEMPLATE" />
   </ItemGroup>
 
   <ItemGroup>

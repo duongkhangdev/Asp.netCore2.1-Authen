@@ -126,13 +126,13 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             var oldPermission = _permissionRepository.GetAll().Where(x => x.RoleId == roleId).ToList();
             if (oldPermission.Count > 0)
             {
-                //_permissionRepository.RemoveMultiple(oldPermission);
+                _permissionRepository.DeleteRange(oldPermission);
             }
+
             foreach (var permission in permissions)
             {
-                //_permissionRepository.Add(permission);
+                _permissionRepository.Insert(permission);
             }
-            _unitOfWork.Commit();
         }
 
         public async Task UpdateAsync(AppRoleViewModel roleVm)

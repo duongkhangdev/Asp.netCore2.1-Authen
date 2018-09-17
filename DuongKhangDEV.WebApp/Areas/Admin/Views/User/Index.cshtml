@@ -1,0 +1,130 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using DuongKhangDEV.WebApp.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Quản lý Người dùng";
+}
+
+@section Styles{
+
+}
+
+@section Scripts{
+    <script src="~/admin-app/controllers/user/index.js" asp-append-version="true"></script>
+
+    <script>
+        var userObj = new UserController();
+        userObj.initialize();
+    </script>
+}
+
+<div id="ui-view">
+    <div>
+        <div class="animated fadeIn">
+            <div class="card">
+                <div class="card-header">
+                    @{
+                        var result = await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Create);
+                    }
+                    @if (result.Succeeded)
+                    {
+                        <button class="btn btn-success btn-sm" id="btn-create" type="button">Tạo mới</button>
+                    }
+                    <button class="btn btn-success btn-sm" id="btn-import" type="button"><span>Tạo mới</span></button>
+
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtKeyword" placeholder="Từ khoá...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-block" type="button" id="btn-search">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tài khoản</th>
+                                <th>Họ tên</th>
+                                <th>Avatar</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-content">
+                            @*Dữ liệu sẽ hiển thị ở đây*@
+                        </tbody>
+                    </table>
+                    <select id="ddl-show-page">
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="item-per-page">
+                        bản ghi/trang.
+                    </span>
+                    Tổng số bản ghi: <strong id="lbl-total-records"></strong>
+                    <nav>
+                        @*<ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Prev</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">4</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>*@
+                        <ul class="pagination" id="paginationUL"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="table-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{UserName}}</td>
+        <td>{{FullName}}</td>
+        <td>{{{Avatar}}}</td>
+        <td>{{{DateCreated}}}</td>
+        <td>{{{Status}}}</td>
+        <td>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Update)).Succeeded)
+            {
+                <a href="#" data-id="{{Id}}" class="btn-edit"><i class="fa fa-pencil-square-o"></i></a>
+            }
+            @if ((await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Delete)).Succeeded)
+            {
+                <a href="#" data-id="{{Id}}" class="btn-delete"><i class="fa fa-trash-o"></i></a>
+            }
+        </td>
+    </tr>
+</script>
+
+<script id="role-template" type="x-tmpl-mustache">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" {{Checked}} value="{{Name}}" name="ckRoles">
+            <span class="text">{{Description}}</span>
+        </label>
+    </div>
+</script>
+
+@await Html.PartialAsync("_AddEditModal.cshtml")
+

@@ -14,6 +14,7 @@ namespace DuongKhangDEV.Data.Entities.SystemCatalog
         {
 
         }
+
         public AppRole(string name, string description) : base(name)
         {
             this.Description = description;

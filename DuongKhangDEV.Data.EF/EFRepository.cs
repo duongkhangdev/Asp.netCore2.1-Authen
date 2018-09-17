@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DuongKhangDEV.Data.EF
@@ -315,13 +316,15 @@ namespace DuongKhangDEV.Data.EF
 
         public virtual async void InsertRangeAsync(IEnumerable<TEntity> entities)
         {
-            _dbContext.Set<TEntity>().AddRange(entities);
+            //_dbContext.Set<TEntity>().AddRange(entities);
+            await _dbContext.Set<TEntity>().AddRangeAsync(entities, new CancellationToken());
             await SaveChangesAsync();
         }
 
         public virtual async void InsertRangeAsync(List<TEntity> entities)
         {
-            _dbContext.Set<TEntity>().AddRange(entities);
+            //_dbContext.Set<TEntity>().AddRange(entities);
+            await _dbContext.Set<TEntity>().AddRangeAsync(entities, new CancellationToken());
             await SaveChangesAsync();
         }
 
@@ -450,17 +453,17 @@ namespace DuongKhangDEV.Data.EF
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {            
             return await _dbContext.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-        public async Task<bool> CheckExitsAsync(object key)
+        public virtual async Task<bool> CheckExitsAsync(object key)
         {
             return await _dbContext.Set<TEntity>().FindAsync(key) == null;
         }
 
-        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbContext.Set<TEntity>().AnyAsync(predicate);
         }

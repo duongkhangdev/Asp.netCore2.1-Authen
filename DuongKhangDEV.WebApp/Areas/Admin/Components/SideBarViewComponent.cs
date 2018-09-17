@@ -52,6 +52,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Components
             {
                 //  Get by permission
                 functions = await _functionService.GetAllWithPermission(User.Identity.Name);
+                //functions = await _functionService.GetAll(string.Empty);
             }
             return View(functions);
         }

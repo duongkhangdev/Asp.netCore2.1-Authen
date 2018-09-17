@@ -129,8 +129,8 @@
                     <a class="dropdown-item" href="/Admin/Login/Logout">
                         <i class="fa fa-lock"></i> Logout
                         @*<form asp-action="Logout" asp-controller="Login" method="post">
-                            <button type="submit"><i class="fa fa-lock"></i> Đăng xuất</button>
-                        </form>*@
+                                <button type="submit"><i class="fa fa-lock"></i> Đăng xuất</button>
+                            </form>*@
                     </a>
                 </div>
             </li>
@@ -498,10 +498,18 @@
     <script src="~/lib/notifyjs/dist/notify.js"></script>
     <script src="~/lib/notifyjs/dist/styles/metro/notify-metro.js"></script>
 
+    <!-- mustache.js -->
+    <script src="~/vendor/mustache/mustache.min.js"></script>
+    <script src="~/vendor/twbs-pagination/jquery.twbsPagination.min.js"></script>
+    <script src="~/vendor/bootbox/bootbox.min.js"></script>
+
     <!-- Plugins and scripts required by this view-->
-    <script src="~/admin-side/vendors/chart.js/js/Chart.min.js"></script>
-    <script src="~/admin-side/vendors/core/coreui-plugin-chartjs-custom-tooltips/js/custom-tooltips.min.js"></script>
-    <script src="~/admin-side/js/main.js"></script>
+    @*<script src="~/admin-side/vendors/chart.js/js/Chart.min.js"></script>*@
+    @*<script src="~/admin-side/vendors/core/coreui-plugin-chartjs-custom-tooltips/js/custom-tooltips.min.js"></script>
+        <script src="~/admin-side/js/main.js"></script>*@
+
+    <!-- tedu: mới thêm asp-append-version -->
+    <script src="~/admin-app/shared/tedu.js" asp-append-version="true"></script>
 
     <!-- RenderSection Scripts -->
     @RenderSection("Scripts", required: false)

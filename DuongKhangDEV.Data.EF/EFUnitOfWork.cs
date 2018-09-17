@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using DuongKhangDEV.Infrastructure.Interfaces;
 
 namespace DuongKhangDEV.Data.EF
@@ -17,6 +19,12 @@ namespace DuongKhangDEV.Data.EF
         public void Commit()
         {
             _dbContext.SaveChanges();
+        }
+
+        public async Task CommitAsync()
+        {            
+            CancellationToken cancellationToken = new CancellationToken();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public void Dispose()

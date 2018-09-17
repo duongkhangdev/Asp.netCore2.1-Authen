@@ -190,6 +190,7 @@ namespace DuongKhangDEV.WebApp
 
             #endregion
 
+            // Áp dụng quyền trên giao diện người dùng
             services.AddTransient<IAuthorizationHandler, BaseResourceAuthorizationHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
