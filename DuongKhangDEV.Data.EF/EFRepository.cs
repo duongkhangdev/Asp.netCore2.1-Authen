@@ -26,7 +26,7 @@ namespace DuongKhangDEV.Data.EF
         #region Not Async
 
         public int Count()
-        {            
+        {
             return _dbContext.Set<TEntity>().Count();
         }
 
@@ -53,7 +53,7 @@ namespace DuongKhangDEV.Data.EF
         public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate);
-        }        
+        }
 
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
         {
@@ -264,7 +264,7 @@ namespace DuongKhangDEV.Data.EF
         public int SaveChanges()
         {
             return _dbContext.SaveChanges();
-        }        
+        }
 
         #endregion
 
@@ -278,8 +278,8 @@ namespace DuongKhangDEV.Data.EF
         public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbContext.Set<TEntity>().CountAsync(predicate);
-        }        
-        
+        }
+
         public async Task<long> LongCountAsync()
         {
             return await _dbContext.Set<TEntity>().LongCountAsync();
@@ -314,26 +314,20 @@ namespace DuongKhangDEV.Data.EF
             return result.Entity.Id;
         }
 
-        public virtual async void InsertRangeAsync(IEnumerable<TEntity> entities)
+        public virtual async Task<IEnumerable<TEntity>> InsertRangeAsync(IEnumerable<TEntity> entities)
         {
-            //_dbContext.Set<TEntity>().AddRange(entities);
             await _dbContext.Set<TEntity>().AddRangeAsync(entities, new CancellationToken());
             await SaveChangesAsync();
+            return entities;
         }
 
-        public virtual async void InsertRangeAsync(List<TEntity> entities)
+        public virtual async Task<List<TEntity>> InsertRangeAsync(List<TEntity> entities)
         {
-            //_dbContext.Set<TEntity>().AddRange(entities);
             await _dbContext.Set<TEntity>().AddRangeAsync(entities, new CancellationToken());
             await SaveChangesAsync();
+            return entities;
         }
 
-        //public async Task<TEntity> UpdateAsync(TEntity entity)
-        //{
-        //    var result = _dbContext.Set<TEntity>().Update(entity);
-        //    await SaveChangesAsync();
-        //    return result.Entity;
-        //}
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
@@ -402,6 +396,74 @@ namespace DuongKhangDEV.Data.EF
             return exist;
         }
 
+        public async Task<IEnumerable<TEntity>> UpdateRangeAsync(IEnumerable<TEntity> entities)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TEntity vm in entities)
+            {
+                var dbEntity = _dbContext.Set<TEntity>().AsNoTracking().Single(p => p.Id.Equals(vm.Id));
+                var databaseEntry = _dbContext.Entry(dbEntity);
+                var inputEntry = _dbContext.Entry(vm);
+
+                //no items mentioned, so find out the updated entries
+                IEnumerable<string> dateProperties = typeof(IDateTracking).GetPublicProperties().Select(x => x.Name);
+
+                var allProperties = databaseEntry.Metadata.GetProperties()
+                .Where(x => !dateProperties.Contains(x.Name));
+
+                foreach (var property in allProperties)
+                {
+                    var proposedValue = inputEntry.Property(property.Name).CurrentValue;
+                    var originalValue = databaseEntry.Property(property.Name).OriginalValue;
+
+                    if (proposedValue != null && !proposedValue.Equals(originalValue))
+                    {
+                        databaseEntry.Property(property.Name).IsModified = true;
+                        databaseEntry.Property(property.Name).CurrentValue = proposedValue;
+                    }
+                }
+                list.Add(dbEntity);
+            }
+
+            _dbContext.Set<TEntity>().UpdateRange(list);
+            await SaveChangesAsync(); // Đoạn này thêm vào
+            return list;
+        }
+
+        public async Task<List<TEntity>> UpdateRangeAsync(List<TEntity> entities)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TEntity vm in entities)
+            {
+                var dbEntity = _dbContext.Set<TEntity>().AsNoTracking().Single(p => p.Id.Equals(vm.Id));
+                var databaseEntry = _dbContext.Entry(dbEntity);
+                var inputEntry = _dbContext.Entry(vm);
+
+                //no items mentioned, so find out the updated entries
+                IEnumerable<string> dateProperties = typeof(IDateTracking).GetPublicProperties().Select(x => x.Name);
+
+                var allProperties = databaseEntry.Metadata.GetProperties()
+                .Where(x => !dateProperties.Contains(x.Name));
+
+                foreach (var property in allProperties)
+                {
+                    var proposedValue = inputEntry.Property(property.Name).CurrentValue;
+                    var originalValue = databaseEntry.Property(property.Name).OriginalValue;
+
+                    if (proposedValue != null && !proposedValue.Equals(originalValue))
+                    {
+                        databaseEntry.Property(property.Name).IsModified = true;
+                        databaseEntry.Property(property.Name).CurrentValue = proposedValue;
+                    }
+                }
+                list.Add(dbEntity);
+            }
+
+            _dbContext.Set<TEntity>().UpdateRange(list);
+            await SaveChangesAsync(); // Đoạn này thêm vào
+            return list;
+        }
+
         public virtual async Task<TEntity> DeleteAsync(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
@@ -417,6 +479,28 @@ namespace DuongKhangDEV.Data.EF
                 _dbContext.Set<TEntity>().Remove(exist);
             }
             return await SaveChangesAsync();
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> DeleteRangeAsync(IEnumerable<TPrimaryKey> id)
+        {
+            var results = await GetRangeAsync(id);
+            if (results != null)
+            {
+                _dbContext.Set<TEntity>().RemoveRange(results);
+                await SaveChangesAsync();
+            }
+            return results;
+        }
+
+        public virtual async Task<List<TEntity>> DeleteRangeAsync(List<TPrimaryKey> id)
+        {
+            var results = await GetRangeAsync(id);
+            if (results != null)
+            {
+                _dbContext.Set<TEntity>().RemoveRange(results);
+                await SaveChangesAsync();
+            }
+            return results;
         }
 
         public virtual async Task<IEnumerable<TEntity>> DeleteRangeAsync(IEnumerable<TEntity> entities)
@@ -443,6 +527,62 @@ namespace DuongKhangDEV.Data.EF
             return await _dbContext.Set<TEntity>().FindAsync(entity);
         }
 
+        public virtual async Task<IEnumerable<TEntity>> GetRangeAsync(IEnumerable<TEntity> entities)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TEntity key in entities)
+            {
+                TEntity exist = await GetByAsync(key);
+                if (exist != null)
+                {
+                    list.Add(exist);
+                }
+            }
+            return list;
+        }
+
+        public virtual async Task<List<TEntity>> GetRangeAsync(List<TEntity> entities)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TEntity key in entities)
+            {
+                TEntity exist = await GetByAsync(key);
+                if (exist != null)
+                {
+                    list.Add(exist);
+                }
+            }
+            return list;
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> GetRangeAsync(IEnumerable<TPrimaryKey> id)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TPrimaryKey key in id)
+            {
+                TEntity exist = await FirstOrDefaultAsync(key);
+                if (exist != null)
+                {
+                    list.Add(exist);
+                }
+            }
+            return list;
+        }
+
+        public virtual async Task<List<TEntity>> GetRangeAsync(List<TPrimaryKey> id)
+        {
+            List<TEntity> list = new List<TEntity>();
+            foreach (TPrimaryKey key in id)
+            {
+                TEntity exist = await FirstOrDefaultAsync(key);
+                if (exist != null)
+                {
+                    list.Add(exist);
+                }
+            }
+            return list;
+        }
+
         public virtual async Task<TEntity> GetByIdAsync(TPrimaryKey id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
@@ -454,7 +594,7 @@ namespace DuongKhangDEV.Data.EF
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
-        {            
+        {
             return await _dbContext.Set<TEntity>().Where(predicate).ToListAsync();
         }
 

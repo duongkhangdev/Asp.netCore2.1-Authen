@@ -75,17 +75,37 @@ namespace DuongKhangDEV.Application.Interfaces
 
         Task<ViewModel> GetByAsync(ViewModel entity);
 
+        Task<IEnumerable<ViewModel>> GetRangeAsync(IEnumerable<ViewModel> entities);
+
+        Task<List<ViewModel>> GetRangeAsync(List<ViewModel> entities);
+
+        Task<IEnumerable<ViewModel>> GetRangeAsync(IEnumerable<TPrimaryKey> id);
+
+        Task<List<ViewModel>> GetRangeAsync(List<TPrimaryKey> id);
+
         Task<ViewModel> InsertAsync(ViewModel entity);
 
         Task<TPrimaryKey> InsertAndGetIdAsync(ViewModel entity);
+
+        Task<List<ViewModel>> InsertRangeAsync(List<ViewModel> entities);
+
+        Task<IEnumerable<ViewModel>> InsertRangeAsync(IEnumerable<ViewModel> entities);
 
         Task<ViewModel> UpdateAsync(ViewModel entity);
 
         Task<ViewModel> UpdateAsync(ViewModel entity, object key);
 
+        Task<IEnumerable<ViewModel>> UpdateRangeAsync(IEnumerable<ViewModel> entities);
+
+        Task<List<ViewModel>> UpdateRangeAsync(List<ViewModel> entities);
+
         Task<ViewModel> DeleteAsync(ViewModel entity);
 
         Task<int> DeleteAsync(TPrimaryKey id);
+
+        Task<int> DeleteRangeAsync(IEnumerable<TPrimaryKey> id);
+
+        Task<int> DeleteRangeAsync(List<TPrimaryKey> id);
 
         Task<IEnumerable<ViewModel>> DeleteRangeAsync(IEnumerable<ViewModel> entities);
 
@@ -98,7 +118,7 @@ namespace DuongKhangDEV.Application.Interfaces
         Task<PagedResult<ViewModel>> GetAllPagingAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, object>> orderBy,
             SortDirection sortDirection, int pageIndex, int pageSize);
 
-        Task<PagedResult<ViewModel>> GetAllPagingAsync(Expression<Func<TEntity, bool>> predicate,int pageIndex, int pageSize);
+        Task<PagedResult<ViewModel>> GetAllPagingAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize);
 
         Task<PagedResult<ViewModel>> GetAllPagingAsync(int pageIndex, int pageSize);
 

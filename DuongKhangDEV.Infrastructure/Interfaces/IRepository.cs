@@ -78,7 +78,7 @@ namespace DuongKhangDEV.Infrastructure.Interfaces
 
         Task<int> CountAsync();
 
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);        
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<long> LongCountAsync();
 
@@ -96,27 +96,39 @@ namespace DuongKhangDEV.Infrastructure.Interfaces
 
         Task<TEntity> GetByAsync(TEntity entity);
 
-        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate);        
+        Task<IEnumerable<TEntity>> GetRangeAsync(IEnumerable<TEntity> entities);
+
+        Task<List<TEntity>> GetRangeAsync(List<TEntity> entities);
+
+        Task<IEnumerable<TEntity>> GetRangeAsync(IEnumerable<TPrimaryKey> id);
+
+        Task<List<TEntity>> GetRangeAsync(List<TPrimaryKey> id);
+
+        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity> InsertAsync(TEntity entity);
 
         Task<TPrimaryKey> InsertAndGetIdAsync(TEntity entity);
 
-        void InsertRangeAsync(IEnumerable<TEntity> entities);
+        Task<IEnumerable<TEntity>> InsertRangeAsync(IEnumerable<TEntity> entities);
 
-        void InsertRangeAsync(List<TEntity> entities);
+        Task<List<TEntity>> InsertRangeAsync(List<TEntity> entities);
 
         Task<TEntity> UpdateAsync(TEntity entity);
 
         Task<TEntity> UpdateAsync(TEntity entity, object key);
 
+        Task<List<TEntity>> UpdateRangeAsync(List<TEntity> entities);
+
+        Task<IEnumerable<TEntity>> UpdateRangeAsync(IEnumerable<TEntity> entities);
+
         Task<TEntity> DeleteAsync(TEntity entity);
 
         Task<int> DeleteAsync(TPrimaryKey id);
 
-        //void DeleteRangeAsync(IEnumerable<TEntity> entities);
+        Task<IEnumerable<TEntity>> DeleteRangeAsync(IEnumerable<TPrimaryKey> id);
 
-        //void DeleteRangeAsync(List<TEntity> entities);
+        Task<List<TEntity>> DeleteRangeAsync(List<TPrimaryKey> id);
 
         Task<IEnumerable<TEntity>> DeleteRangeAsync(IEnumerable<TEntity> entities);
 

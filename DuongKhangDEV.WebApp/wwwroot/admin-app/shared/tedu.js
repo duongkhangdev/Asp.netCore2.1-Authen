@@ -132,7 +132,7 @@
         return a.join('.');
     },
 
-    // 
+    // jQuery EasyUI
     unflattern: function (arr) {
         var map = {};
         var roots = [];

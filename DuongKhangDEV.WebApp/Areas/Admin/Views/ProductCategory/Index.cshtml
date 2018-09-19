@@ -1,0 +1,120 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using DuongKhangDEV.WebApp.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link href="~/lib/jquery-easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="~/lib/jquery-easyui/themes/icon.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/jquery-easyui/jquery.easyui.min.js"></script>
+    <script src="~/admin-app/controllers/product-category/index.js" asp-append-version="true"></script>
+
+    <script>
+        var productCategory = new ProductCategoryController();
+        productCategory.initialize();
+    </script>
+}
+
+<div id="ui-view">
+    <div>
+        <div class="animated fadeIn">
+            <div class="card">
+                <div class="card-header">
+                    @{
+                        var result = await AuthorizationService.AuthorizeAsync(User, "USER", Operations.Create);
+                    }
+                    @if (result.Succeeded)
+                    {
+                        <button class="btn btn-success btn-sm" id="btn-create" type="button">Tạo mới</button>
+                    }
+                    <button class="btn btn-success btn-sm" id="btn-import" type="button"><span>Tạo mới</span></button>
+
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input name="ddlCategoryIdM" class="form-control" id="ddlCategoryIdSearch" value="">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtKeyword" placeholder="Từ khoá...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-block" type="button" id="btn-search">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tên</th>
+                                <th>Mô tả</th>
+                                <th>Hình ảnh</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-content">
+
+                        </tbody>
+                    </table>
+                    <select id="ddl-show-page">
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="item-per-page">
+                        bản ghi/trang.
+                    </span>
+                    Tổng số bản ghi: <strong id="lbl-total-records"></strong>
+                    <nav>
+                        @*<ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Prev</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">4</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>*@
+                        <ul class="pagination" id="paginationUL"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="table-template" type="x-tmpl-mustache">
+    <tr>
+        <td>{{Name}}</td>
+        <td>{{Description}}</td>
+        <td>{{{ThumbnailImage}}}</td>
+        <td>{{DateCreated}}</td>
+        <td>{{{Status}}}</td>
+        <th scope="row">
+            <a class="btn btn-sm btn-edit" data-id="{{Id}}"><i class="fa fa-pencil"></i></a>
+            <a class="btn btn-sm btn-delete" data-id="{{Id}}"><i class="fa fa-trash"></i></a>
+        </th>
+    </tr>
+</script>
+
+@await Html.PartialAsync("_AddEditModal.cshtml")

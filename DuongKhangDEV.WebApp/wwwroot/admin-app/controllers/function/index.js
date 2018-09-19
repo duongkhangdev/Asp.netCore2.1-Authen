@@ -41,33 +41,7 @@
         $('body').on('click', '.btn-edit', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                url: "/Admin/Function/GetById",
-                data: { id: that },
-                dataType: "json",
-                beforeSend: function () {
-                    tedu.startLoading();
-                },
-                success: function (response) {
-                    var data = response;
-                    $('#hidIdM').val(data.Id);
-                    $('#txtNameM').val(data.Name);
-                    initTreeDropDownCategory(data.ParentId);
-                    $('#txtAliasM').val(data.URL);
-                    $('#txtIconCssM').val(data.IconCss);
-                    $('#txtParentM').val(data.ParentId);
-                    $('#txtOrderM').val(data.SortOrder);
-                    $('#ckStatusM').prop('checked', data.Status === 1);
-
-                    $('#modal-add-edit').modal('show');
-                    tedu.stopLoading();
-                },
-                error: function () {
-                    tedu.notify('Có lỗi xảy ra', 'error');
-                    tedu.stopLoading();
-                }
-            });
+            loadDetails(that);
         });
 
         $('#btnSaveM').on('click', function (e) {
@@ -118,28 +92,62 @@
         $('body').on('click', '.btn-delete', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
-            tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/Function/Delete",
-                    data: { id: that },
-                    dataType: "json",
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function () {
-                        tedu.notify('Xoá thành công !', 'success');
-                        tedu.stopLoading();
-                        loadData();
-                    },
-                    error: function () {
-                        tedu.notify('Xoá không thành công', 'error');
-                        tedu.stopLoading();
-                    }
-                });
-            });
+            deleteFunction(that);
         });
     };
+
+    function loadDetails(that) {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Function/GetById",
+            data: { id: that },
+            dataType: "json",
+            beforeSend: function () {
+                tedu.startLoading();
+            },
+            success: function (response) {
+                var data = response;
+                $('#hidIdM').val(data.Id);
+                $('#txtNameM').val(data.Name);
+                initTreeDropDownCategory(data.ParentId);
+                $('#txtAliasM').val(data.URL);
+                $('#txtIconCssM').val(data.IconCss);
+                $('#txtParentM').val(data.ParentId);
+                $('#txtOrderM').val(data.SortOrder);
+                $('#ckStatusM').prop('checked', data.Status === 1);
+
+                $('#modal-add-edit').modal('show');
+                tedu.stopLoading();
+            },
+            error: function () {
+                tedu.notify('Có lỗi xảy ra', 'error');
+                tedu.stopLoading();
+            }
+        });
+    }
+
+    function deleteFunction(that){
+        tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Function/Delete",
+                data: { id: that },
+                dataType: "json",
+                beforeSend: function () {
+                    tedu.startLoading();
+                },
+                success: function () {
+                    tedu.notify('Xoá thành công !', 'success');
+                    tedu.stopLoading();
+                    loadData();
+                },
+                error: function () {
+                    tedu.notify('Xoá không thành công', 'error');
+                    tedu.stopLoading();
+                }
+            });
+        });
+    }
 
     function resetFormMaintainance() {
         $('#hidIdM').val(0);
@@ -147,7 +155,6 @@
         initTreeDropDownCategory('');
         $('#txtAliasM').val('');
         $('#ckStatusM').prop('checked', true);
-
     }
 
     function loadData(isPageChanged) {

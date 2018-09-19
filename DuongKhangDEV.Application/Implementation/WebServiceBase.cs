@@ -38,7 +38,7 @@ namespace DuongKhangDEV.Application.Implementation
 
         public virtual ViewModel Insert(ViewModel viewModel)
         {
-            var model = Mapper.Map<ViewModel, TEntity>(viewModel);            
+            var model = Mapper.Map<ViewModel, TEntity>(viewModel);
             return Mapper.Map<TEntity, ViewModel>(_repository.Insert(model));
         }
 
@@ -79,7 +79,7 @@ namespace DuongKhangDEV.Application.Implementation
                 var model = Mapper.Map<ViewModel, TEntity>(vm);
                 list.Add(model);
             }
-            
+
             _repository.DeleteRange(list);
         }
 
@@ -145,7 +145,7 @@ namespace DuongKhangDEV.Application.Implementation
             return paginationSet;
         }
 
-        public virtual PagedResult<ViewModel> GetAllPaging(Expression<Func<TEntity, bool>> predicate,int pageIndex, int pageSize)
+        public virtual PagedResult<ViewModel> GetAllPaging(Expression<Func<TEntity, bool>> predicate, int pageIndex, int pageSize)
         {
             var query = _repository.GetAll().Where(predicate);
 
@@ -234,7 +234,7 @@ namespace DuongKhangDEV.Application.Implementation
         }
 
         public virtual async Task<ViewModel> GetByAsync(ViewModel entity)
-        {            
+        {
             var model = Mapper.Map<ViewModel, TEntity>(entity);
             var result = await _repository.GetByAsync(model);
 
@@ -245,6 +245,36 @@ namespace DuongKhangDEV.Application.Implementation
         {
             var entity = await _repository.GetByIdAsync(id);
             return Mapper.Map<TEntity, ViewModel>(entity);
+        }
+
+        public virtual async Task<IEnumerable<ViewModel>> GetRangeAsync(IEnumerable<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities.ToList());
+            var items = await _repository.GetRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
+        }
+
+        public virtual async Task<List<ViewModel>> GetRangeAsync(List<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities);
+            var items = await _repository.GetRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
+        }
+
+        public virtual async Task<IEnumerable<ViewModel>> GetRangeAsync(IEnumerable<TPrimaryKey> id)
+        {
+            var items = await _repository.GetRangeAsync(id);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items.ToList());
+            return results;
+        }
+
+        public virtual async Task<List<ViewModel>> GetRangeAsync(List<TPrimaryKey> id)
+        {
+            var items = await _repository.GetRangeAsync(id);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
         }
 
         public virtual async Task<List<ViewModel>> GetAllAsync()
@@ -278,8 +308,24 @@ namespace DuongKhangDEV.Application.Implementation
         public virtual async Task<TPrimaryKey> InsertAndGetIdAsync(ViewModel entity)
         {
             var model = Mapper.Map<ViewModel, TEntity>(entity);
-            
+
             return await _repository.InsertAndGetIdAsync(model);
+        }
+
+        public virtual async Task<List<ViewModel>> InsertRangeAsync(List<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities);
+            var items = await _repository.InsertRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
+        }
+
+        public virtual async Task<IEnumerable<ViewModel>> InsertRangeAsync(IEnumerable<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities.ToList());
+            var items = await _repository.InsertRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
         }
 
         public virtual async Task<ViewModel> UpdateAsync(ViewModel entity)
@@ -296,6 +342,22 @@ namespace DuongKhangDEV.Application.Implementation
             return Mapper.Map<TEntity, ViewModel>(result);
         }
 
+        public virtual async Task<IEnumerable<ViewModel>> UpdateRangeAsync(IEnumerable<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities.ToList());
+            var items = await _repository.UpdateRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
+        }
+
+        public virtual async Task<List<ViewModel>> UpdateRangeAsync(List<ViewModel> entities)
+        {
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities);
+            var items = await _repository.UpdateRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
+        }
+
         public virtual async Task<int> DeleteAsync(TPrimaryKey id)
         {
             return await _repository.DeleteAsync(id);
@@ -308,28 +370,32 @@ namespace DuongKhangDEV.Application.Implementation
             return entity;
         }
 
+        public virtual async Task<int> DeleteRangeAsync(IEnumerable<TPrimaryKey> id)
+        {
+            var results = await _repository.DeleteRangeAsync(id);
+            return results.Count();
+        }
+
+        public virtual async Task<int> DeleteRangeAsync(List<TPrimaryKey> id)
+        {
+            var results = await _repository.DeleteRangeAsync(id);
+            return results.Count();
+        }
+
         public virtual async Task<IEnumerable<ViewModel>> DeleteRangeAsync(IEnumerable<ViewModel> entities)
         {
-            List<TEntity> list = new List<TEntity>();
-            foreach (ViewModel vm in entities)
-            {
-                var model = Mapper.Map<ViewModel, TEntity>(vm);
-                list.Add(model);
-            }
-            await _repository.DeleteRangeAsync(list);
-            return entities;
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities.ToList());
+            var items = await _repository.DeleteRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
         }
 
         public virtual async Task<List<ViewModel>> DeleteRangeAsync(List<ViewModel> entities)
         {
-            List<TEntity> list = new List<TEntity>();
-            foreach (ViewModel vm in entities)
-            {
-                var model = Mapper.Map<ViewModel, TEntity>(vm);
-                list.Add(model);
-            }
-            await _repository.DeleteRangeAsync(list);
-            return entities;
+            var list = Mapper.Map<List<ViewModel>, List<TEntity>>(entities.ToList());
+            var items = await _repository.DeleteRangeAsync(list);
+            var results = Mapper.Map<List<TEntity>, List<ViewModel>>(items);
+            return results;
         }
 
         public virtual async Task<bool> CheckExitsAsync(object key)

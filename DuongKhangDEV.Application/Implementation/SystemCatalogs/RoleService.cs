@@ -21,7 +21,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
         private RoleManager<AppRole> _roleManager;
         private IRepository<Function, string> _functionRepository;
         private IRepository<Permission, int> _permissionRepository;
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RoleService(RoleManager<AppRole> roleManager, IUnitOfWork unitOfWork,
          IRepository<Function, string> functionRepository, IRepository<Permission, int> permissionRepository)

@@ -16,17 +16,8 @@ namespace DuongKhangDEV.Application.ViewModels.ProductCatalog
         [Required]
         public string Name { get; set; }
 
-        [StringLength(255)]
-        public string Name2 { get; set; }
-
         [Required]
         public int CategoryId { get; set; }
-
-        [Required]
-        public int ManufacturerId { get; set; }
-
-        [Required]
-        public int VendorId { get; set; }
 
         [StringLength(255)]
         public string ThumbnailImage { get; set; }

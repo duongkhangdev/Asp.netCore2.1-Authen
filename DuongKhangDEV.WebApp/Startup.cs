@@ -25,6 +25,8 @@ using System.IO;
 using DuongKhangDEV.WebApp.Helpers;
 using DuongKhangDEV.Application.Interfaces.SystemCatalog;
 using DuongKhangDEV.Application.Implementation.SystemCatalog;
+using DuongKhangDEV.Application.Interfaces.ProductCatalogs;
+using DuongKhangDEV.Application.Implementation.ProductCatalogs;
 
 namespace DuongKhangDEV.WebApp
 {
@@ -140,8 +142,8 @@ namespace DuongKhangDEV.WebApp
 
             #region Product Catalog
 
-            //services.AddTransient<IProductCategoryService, ProductCategoryService>();
-            //services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IProductService, ProductService>();
             //services.AddTransient<IVendorService, VendorService>();
             //services.AddTransient<IManufacturerService, ManufacturerService>();
 

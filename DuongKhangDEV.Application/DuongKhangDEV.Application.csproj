@@ -11,14 +11,12 @@
     <Folder Include="Implementation\Contents\" />
     <Folder Include="Implementation\ECommerces\" />
     <Folder Include="Implementation\Reports\" />
-    <Folder Include="Implementation\ProductCatalogs\" />
     <Folder Include="Interfaces\Advs\" />
     <Folder Include="Interfaces\BlogCatalogs\" />
     <Folder Include="Interfaces\Commons\" />
     <Folder Include="Interfaces\Contents\" />
     <Folder Include="Interfaces\ECommerces\" />
     <Folder Include="Interfaces\Reports\" />
-    <Folder Include="Interfaces\ProductCatalogs\" />
     <Folder Include="ViewModels\Reports\" />
   </ItemGroup>
 

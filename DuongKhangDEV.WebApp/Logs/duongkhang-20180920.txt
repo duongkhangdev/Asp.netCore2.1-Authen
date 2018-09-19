@@ -1,0 +1,235 @@
+2018-09-20T05:51:15.9568147+07:00 0HLGU64QQFEB1:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin/product/index   (ca22a1cb)
+2018-09-20T05:51:15.9816285+07:00 0HLGU64QQFEB1:00000001 [INF] Entity Framework Core "2.1.3-rtm-32065" initialized '"AppDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "MigrationsAssembly=DuongKhangDEV.Data.EF " (9958f5bb)
+2018-09-20T05:51:16.0551033+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("31"ms) [Parameters=["@__get_Item_0='?' (DbType = Guid)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [e].[Id], [e].[AccessFailedCount], [e].[Address], [e].[Avatar], [e].[Balance], [e].[BirthDay], [e].[City], [e].[ConcurrencyStamp], [e].[DateCreated], [e].[DateDeleted], [e].[DateModified], [e].[Email], [e].[EmailConfirmed], [e].[FullName], [e].[LockoutEnabled], [e].[LockoutEnd], [e].[NormalizedEmail], [e].[NormalizedUserName], [e].[PasswordHash], [e].[PhoneNumber], [e].[PhoneNumberConfirmed], [e].[SecurityStamp], [e].[Status], [e].[TwoFactorEnabled], [e].[UserName]
+FROM [AppUsers] AS [e]
+WHERE [e].[Id] = @__get_Item_0" (0723d8ff)
+2018-09-20T05:51:16.1011968+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("42"ms) [Parameters=["@__user_Id_0='?' (DbType = Guid)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [uc].[Id], [uc].[ClaimType], [uc].[ClaimValue], [uc].[UserId]
+FROM [AppUserClaims] AS [uc]
+WHERE [uc].[UserId] = @__user_Id_0" (0723d8ff)
+2018-09-20T05:51:16.1391562+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("35"ms) [Parameters=["@__userId_0='?' (DbType = Guid)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [role].[Name]
+FROM [AppUserRoles] AS [userRole]
+INNER JOIN [AppRoles] AS [role] ON [userRole].[RoleId] = [role].[Id]
+WHERE [userRole].[UserId] = @__userId_0" (0723d8ff)
+2018-09-20T05:51:16.1755517+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("34"ms) [Parameters=["@__normalizedName_0='?' (Size = 4000)"], CommandType='Text', CommandTimeout='30']"
+""SELECT TOP(1) [r].[Id], [r].[ConcurrencyStamp], [r].[Description], [r].[Name], [r].[NormalizedName]
+FROM [AppRoles] AS [r]
+WHERE [r].[NormalizedName] = @__normalizedName_0" (0723d8ff)
+2018-09-20T05:51:16.2191074+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("39"ms) [Parameters=["@__role_Id_0='?' (DbType = Guid)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [rc].[ClaimType], [rc].[ClaimValue]
+FROM [AppRoleClaims] AS [rc]
+WHERE [rc].[RoleId] = @__role_Id_0" (0723d8ff)
+2018-09-20T05:51:16.2543271+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("32"ms) [Parameters=["@__userId_0='?' (DbType = Guid)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [role].[Name]
+FROM [AppUserRoles] AS [userRole]
+INNER JOIN [AppRoles] AS [role] ON [userRole].[RoleId] = [role].[Id]
+WHERE [userRole].[UserId] = @__userId_0" (0723d8ff)
+2018-09-20T05:51:16.2570950+07:00 0HLGU64QQFEB1:00000001 [INF] Route matched with "{area = \"Admin\", action = \"Index\", controller = \"Product\"}". Executing action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.Index (DuongKhangDEV.WebApp)" (a44c0341)
+2018-09-20T05:51:16.2592057+07:00 0HLGU64QQFEB1:00000001 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:16.3069701+07:00 0HLGU64QQFEB1:00000001 [INF] Executing action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.Index (DuongKhangDEV.WebApp)" - Validation state: Valid (dad538d7)
+2018-09-20T05:51:16.3094798+07:00 0HLGU64QQFEB1:00000001 [INF] Executed action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.Index (DuongKhangDEV.WebApp)", returned result "Microsoft.AspNetCore.Mvc.ViewResult" in 0.0466ms. (50a9e262)
+2018-09-20T05:51:16.3149969+07:00 0HLGU64QQFEB1:00000001 [INF] Executing ViewResult, running view "Index". (c83d0e25)
+2018-09-20T05:51:16.3911926+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("65"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [r].[Name], [f].[Id]
+FROM [Functions] AS [f]
+INNER JOIN [Permissions] AS [p] ON [f].[Id] = [p].[FunctionId]
+INNER JOIN [AppRoles] AS [r] ON [p].[RoleId] = [r].[Id]
+WHERE [p].[CanCreate] = 1" (0723d8ff)
+2018-09-20T05:51:16.3937606+07:00 0HLGU64QQFEB1:00000001 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:16.4548590+07:00 0HLGU64QQFEB1:00000001 [INF] Executed DbCommand ("55"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [x].[IconCss], [x].[Id], [x].[Name], [x].[ParentId], [x].[SortOrder], [x].[Status], [x].[URL]
+FROM [Functions] AS [x]
+WHERE [x].[Status] = 1
+ORDER BY [x].[ParentId]" (0723d8ff)
+2018-09-20T05:51:16.4747354+07:00 0HLGU64QQFEB1:00000001 [INF] Executed ViewResult - view "Index" executed in 162.7929ms. (f66409e9)
+2018-09-20T05:51:16.4777822+07:00 0HLGU64QQFEB1:00000001 [INF] Executed action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.Index (DuongKhangDEV.WebApp)" in 217.7429ms (afa2e885)
+2018-09-20T05:51:16.4838682+07:00 0HLGU64QQFEB1:00000001 [INF] Request finished in 528.0888ms 200 text/html; charset=utf-8 (791a596a)
+2018-09-20T05:51:16.5339553+07:00 0HLGU64QQFEB1:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/brand/logo.svg   (ca22a1cb)
+2018-09-20T05:51:16.5643120+07:00 0HLGU64QQFEB2:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/simple-line-icons/css/simple-line-icons.css   (ca22a1cb)
+2018-09-20T05:51:16.5682283+07:00 0HLGU64QQFEB1:00000002 [INF] The file "/admin-side/img/brand/logo.svg" was not modified (f1f8d725)
+2018-09-20T05:51:16.5939559+07:00 0HLGU64QQFEB2:00000001 [INF] The file "/admin-side/vendors/simple-line-icons/css/simple-line-icons.css" was not modified (f1f8d725)
+2018-09-20T05:51:16.6090822+07:00 0HLGU64QQFEB3:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/css/style.css   (ca22a1cb)
+2018-09-20T05:51:16.6806020+07:00 0HLGU64QQFEB4:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/core/icons/css/coreui-icons.min.css   (ca22a1cb)
+2018-09-20T05:51:16.6893859+07:00 0HLGU64QQFEB5:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/pace-progress/css/pace.min.css   (ca22a1cb)
+2018-09-20T05:51:16.6922329+07:00 0HLGU64QQFEB8:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/popper.js/js/popper.min.js   (ca22a1cb)
+2018-09-20T05:51:16.6935720+07:00 0HLGU64QQFEB4:00000001 [INF] The file "/admin-side/vendors/core/icons/css/coreui-icons.min.css" was not modified (f1f8d725)
+2018-09-20T05:51:16.6963818+07:00 0HLGU64QQFEB5:00000001 [INF] The file "/admin-side/vendors/pace-progress/css/pace.min.css" was not modified (f1f8d725)
+2018-09-20T05:51:16.7053141+07:00 0HLGU64QQFEB8:00000001 [INF] The file "/admin-side/vendors/popper.js/js/popper.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.7117166+07:00 0HLGU64QQFEB4:00000001 [INF] Request finished in 104.0493ms 304 text/css (791a596a)
+2018-09-20T05:51:16.7142722+07:00 0HLGU64QQFEB8:00000001 [INF] Request finished in 45.6558ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.7194338+07:00 0HLGU64QQFEB5:00000001 [INF] Request finished in 106.4044ms 304 text/css (791a596a)
+2018-09-20T05:51:16.7211700+07:00 0HLGU64QQFEB3:00000001 [INF] The file "/admin-side/css/style.css" was not modified (f1f8d725)
+2018-09-20T05:51:16.7325102+07:00 0HLGU64QQFEB1:00000002 [INF] Request finished in 42.0715ms 304 image/svg+xml (791a596a)
+2018-09-20T05:51:16.7596794+07:00 0HLGU64QQFEB3:00000001 [INF] Request finished in 152.8877ms 304 text/css (791a596a)
+2018-09-20T05:51:16.7674225+07:00 0HLGU64QQFEB1:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/jquery/js/jquery.min.js   (ca22a1cb)
+2018-09-20T05:51:16.7712971+07:00 0HLGU64QQFEB2:00000001 [INF] Request finished in 64.8452ms 304 text/css (791a596a)
+2018-09-20T05:51:16.7730756+07:00 0HLGU64QQFEB1:00000003 [INF] The file "/admin-side/vendors/jquery/js/jquery.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.7767526+07:00 0HLGU64QQFEB2:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/bootstrap/js/bootstrap.min.js   (ca22a1cb)
+2018-09-20T05:51:16.7829415+07:00 0HLGU64QQFEB1:00000003 [INF] Request finished in 41.3166ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.7885501+07:00 0HLGU64QQFEB2:00000002 [INF] The file "/admin-side/vendors/bootstrap/js/bootstrap.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.7957710+07:00 0HLGU64QQFEB7:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/font-awesome/css/font-awesome.min.css   (ca22a1cb)
+2018-09-20T05:51:16.8009173+07:00 0HLGU64QQFEB4:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/pace-progress/js/pace.min.js   (ca22a1cb)
+2018-09-20T05:51:16.8040304+07:00 0HLGU64QQFEB2:00000002 [INF] Request finished in 17.2052ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.8059432+07:00 0HLGU64QQFEB4:00000002 [INF] The file "/admin-side/vendors/pace-progress/js/pace.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.8193809+07:00 0HLGU64QQFEB5:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js   (ca22a1cb)
+2018-09-20T05:51:16.8223476+07:00 0HLGU64QQFEB4:00000002 [INF] Request finished in 22.7734ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.8239849+07:00 0HLGU64QQFEB5:00000002 [INF] The file "/admin-side/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.8272853+07:00 0HLGU64QQFEB7:00000001 [INF] The file "/admin-side/vendors/font-awesome/css/font-awesome.min.css" was not modified (f1f8d725)
+2018-09-20T05:51:16.8326452+07:00 0HLGU64QQFEB8:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/core/coreui/js/coreui.min.js   (ca22a1cb)
+2018-09-20T05:51:16.8377616+07:00 0HLGU64QQFEB5:00000002 [INF] Request finished in 23.6307ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.8412328+07:00 0HLGU64QQFEB8:00000002 [INF] The file "/admin-side/vendors/core/coreui/js/coreui.min.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.8534118+07:00 0HLGU64QQFEB3:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-app/shared/tedu.js?v=1IlNfBRsczksjZ5csWO6ZrdGfEa-KJO-mrHxDia5IYg   (ca22a1cb)
+2018-09-20T05:51:16.8576059+07:00 0HLGU64QQFEB8:00000002 [INF] Request finished in 19.9621ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.8603544+07:00 0HLGU64QQFEB3:00000002 [INF] The file "/admin-app/shared/tedu.js" was not modified (f1f8d725)
+2018-09-20T05:51:16.8631008+07:00 0HLGU64QQFEB1:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-app/controllers/product/index.js?v=_Eqe-AjSkESLGM69aO9aPx1x1n2HG2JoZOQtZ3E9jY4   (ca22a1cb)
+2018-09-20T05:51:16.8679492+07:00 0HLGU64QQFEB3:00000002 [INF] Request finished in 22.5684ms 304 application/javascript (791a596a)
+2018-09-20T05:51:16.8839218+07:00 0HLGU64QQFEB7:00000001 [INF] Request finished in 147.9956ms 304 text/css (791a596a)
+2018-09-20T05:51:16.8880681+07:00 0HLGU64QQFEB6:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/flag-icon-css/css/flag-icon.min.css   (ca22a1cb)
+2018-09-20T05:51:16.8911047+07:00 0HLGU64QQFEB2:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/brand/sygnet.svg   (ca22a1cb)
+2018-09-20T05:51:16.8941476+07:00 0HLGU64QQFEB4:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/6.jpg   (ca22a1cb)
+2018-09-20T05:51:16.8977005+07:00 0HLGU64QQFEB2:00000003 [INF] The file "/admin-side/img/brand/sygnet.svg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9008083+07:00 0HLGU64QQFEB4:00000003 [INF] The file "/admin-side/img/avatars/6.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9115216+07:00 0HLGU64QQFEB2:00000003 [INF] Request finished in 12.7897ms 304 image/svg+xml (791a596a)
+2018-09-20T05:51:16.9147446+07:00 0HLGU64QQFEB4:00000003 [INF] Request finished in 19.2371ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:16.9199784+07:00 0HLGU64QQFEB5:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/7.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9236394+07:00 0HLGU64QQFEB7:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/4.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9283250+07:00 0HLGU64QQFEB5:00000003 [INF] The file "/admin-side/img/avatars/7.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9321271+07:00 0HLGU64QQFEB7:00000002 [INF] The file "/admin-side/img/avatars/4.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9387251+07:00 0HLGU64QQFEB5:00000003 [INF] Request finished in 16.7811ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:16.9442757+07:00 0HLGU64QQFEB7:00000002 [INF] Request finished in 17.3748ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:16.9578737+07:00 0HLGU64QQFEB1:00000004 [INF] Sending file. Request path: '"/admin-app/controllers/product/index.js"'. Physical path: '"E:\Programmer\Csharp\Projects\DuongKhangDEV\Async\Authen\DuongKhangDEV\DuongKhangDEV.WebApp\wwwroot\admin-app\controllers\product\index.js"' (27b0a520)
+2018-09-20T05:51:16.9623405+07:00 0HLGU64QQFEB3:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/3.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9713002+07:00 0HLGU64QQFEB8:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/2.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9731797+07:00 0HLGU64QQFEB3:00000003 [INF] The file "/admin-side/img/avatars/3.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9764939+07:00 0HLGU64QQFEB8:00000003 [INF] The file "/admin-side/img/avatars/2.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:16.9800508+07:00 0HLGU64QQFEB3:00000003 [INF] Request finished in 30.3338ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:16.9861511+07:00 0HLGU64QQFEB8:00000003 [INF] Request finished in 33.7912ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:16.9885434+07:00 0HLGU64QQFEB1:00000004 [INF] Request finished in 104.5026ms 200 application/javascript (791a596a)
+2018-09-20T05:51:16.9910720+07:00 0HLGU64QQFEB2:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/8.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9938675+07:00 0HLGU64QQFEB1:00000005 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/img/avatars/5.jpg   (ca22a1cb)
+2018-09-20T05:51:16.9956931+07:00 0HLGU64QQFEB6:00000001 [INF] The file "/admin-side/vendors/flag-icon-css/css/flag-icon.min.css" was not modified (f1f8d725)
+2018-09-20T05:51:17.0033735+07:00 0HLGU64QQFEB2:00000004 [INF] The file "/admin-side/img/avatars/8.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:17.0080227+07:00 0HLGU64QQFEB1:00000005 [INF] The file "/admin-side/img/avatars/5.jpg" was not modified (f1f8d725)
+2018-09-20T05:51:17.0129275+07:00 0HLGU64QQFEB2:00000004 [INF] Request finished in 17.2734ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:17.0157920+07:00 0HLGU64QQFEB1:00000005 [INF] Request finished in 19.4297ms 304 image/jpeg (791a596a)
+2018-09-20T05:51:17.0174735+07:00 0HLGU64QQFEB6:00000001 [INF] Request finished in 316.7667ms 304 text/css (791a596a)
+2018-09-20T05:51:17.0420714+07:00 0HLGU64QQFEB4:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/simple-line-icons/fonts/Simple-Line-Icons.woff2?v=2.4.0   (ca22a1cb)
+2018-09-20T05:51:17.0453603+07:00 0HLGU64QQFEB4:00000004 [INF] The file "/admin-side/vendors/simple-line-icons/fonts/Simple-Line-Icons.woff2" was not modified (f1f8d725)
+2018-09-20T05:51:17.0484419+07:00 0HLGU64QQFEB4:00000004 [INF] Request finished in 6.1604ms 304 font/woff2 (791a596a)
+2018-09-20T05:51:17.1283966+07:00 0HLGU64QQFEB5:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/core/icons/css/coreui-icons.min.css.map   (ca22a1cb)
+2018-09-20T05:51:17.1302455+07:00 0HLGU64QQFEB7:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/css/style.css.map   (ca22a1cb)
+2018-09-20T05:51:17.1431010+07:00 0HLGU64QQFEB5:00000004 [INF] The file "/admin-side/vendors/core/icons/css/coreui-icons.min.css.map" was not modified (f1f8d725)
+2018-09-20T05:51:17.1611741+07:00 0HLGU64QQFEB7:00000003 [INF] The file "/admin-side/css/style.css.map" was not modified (f1f8d725)
+2018-09-20T05:51:17.1717201+07:00 0HLGU64QQFEB5:00000004 [INF] Request finished in 23.1446ms 304 text/plain (791a596a)
+2018-09-20T05:51:17.1841090+07:00 0HLGU64QQFEB7:00000003 [INF] Request finished in 38.4969ms 304 text/plain (791a596a)
+2018-09-20T05:51:17.5235275+07:00 0HLGU64QQFEB3:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin/product/GetAllCategories   (ca22a1cb)
+2018-09-20T05:51:17.5328237+07:00 0HLGU64QQFEB3:00000004 [INF] Route matched with "{area = \"Admin\", action = \"GetAllCategories\", controller = \"Product\"}". Executing action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" (a44c0341)
+2018-09-20T05:51:17.5413220+07:00 0HLGU64QQFEB3:00000004 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:17.5452491+07:00 0HLGU64QQFEB8:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/bootstrap/js/bootstrap.min.js.map   (ca22a1cb)
+2018-09-20T05:51:17.5887903+07:00 0HLGU64QQFEB6:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/popper.js/js/popper.min.js.map   (ca22a1cb)
+2018-09-20T05:51:17.5941299+07:00 0HLGU64QQFEB8:00000004 [INF] The file "/admin-side/vendors/bootstrap/js/bootstrap.min.js.map" was not modified (f1f8d725)
+2018-09-20T05:51:17.5974334+07:00 0HLGU64QQFEB3:00000004 [INF] Executing action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" - Validation state: Valid (dad538d7)
+2018-09-20T05:51:17.6052224+07:00 0HLGU64QQFEB8:00000004 [INF] Request finished in 57.3676ms 304 text/plain (791a596a)
+2018-09-20T05:51:17.6103756+07:00 0HLGU64QQFEB6:00000002 [INF] The file "/admin-side/vendors/popper.js/js/popper.min.js.map" was not modified (f1f8d725)
+2018-09-20T05:51:17.6211323+07:00 0HLGU64QQFEB3:00000004 [INF] Entity Framework Core "2.1.3-rtm-32065" initialized '"AppDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "MigrationsAssembly=DuongKhangDEV.Data.EF " (9958f5bb)
+2018-09-20T05:51:17.6299279+07:00 0HLGU64QQFEB6:00000002 [INF] Request finished in 74.6845ms 304 text/plain (791a596a)
+2018-09-20T05:51:17.7798097+07:00 0HLGU64QQFEB2:00000005 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/core/coreui/js/coreui.min.js.map   (ca22a1cb)
+2018-09-20T05:51:17.7870350+07:00 0HLGU64QQFEB2:00000005 [INF] The file "/admin-side/vendors/core/coreui/js/coreui.min.js.map" was not modified (f1f8d725)
+2018-09-20T05:51:17.7919708+07:00 0HLGU64QQFEB2:00000005 [INF] Request finished in 245.4831ms 304 text/plain (791a596a)
+2018-09-20T05:51:17.7979364+07:00 0HLGU64QQFEB3:00000004 [INF] Executed DbCommand ("167"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [dtoProductCategory].[DateCreated], [dtoProductCategory].[DateDeleted], [dtoProductCategory].[DateModified], [dtoProductCategory].[Description], [dtoProductCategory].[HomeFlag], [dtoProductCategory].[HomeOrder], [dtoProductCategory].[Id], [dtoProductCategory].[MetaAlias], [dtoProductCategory].[MetaDescription], [dtoProductCategory].[MetaKeywords], [dtoProductCategory].[MetaTitle], [dtoProductCategory].[Name], [dtoProductCategory].[ParentId], [dtoProductCategory].[SortOrder], [dtoProductCategory].[Status], [dtoProductCategory].[ThumbnailImage], [dtoProductCategory].[UniqueCode]
+FROM [ProductCategories] AS [dtoProductCategory]
+ORDER BY [dtoProductCategory].[Id]" (0723d8ff)
+2018-09-20T05:51:17.8478936+07:00 0HLGU64QQFEB3:00000004 [INF] Executed DbCommand ("47"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [t].[Id], [dtoProductCategory.Products].[AllowAddedToCart], [dtoProductCategory.Products].[AlwaysOnTheHomePage], [dtoProductCategory.Products].[AlwaysOnTheMainMenu], [dtoProductCategory.Products].[CategoryId], [dtoProductCategory.Products].[Content], [dtoProductCategory.Products].[DateCreated], [dtoProductCategory.Products].[DateDeleted], [dtoProductCategory.Products].[DateModified], [dtoProductCategory.Products].[Description], [dtoProductCategory.Products].[HomeFlag], [dtoProductCategory.Products].[HotFlag], [dtoProductCategory.Products].[HotNewFlag], [dtoProductCategory.Products].[HotSalesFlag], [dtoProductCategory.Products].[Id] AS [Id0], [dtoProductCategory.Products].[MetaAlias], [dtoProductCategory.Products].[MetaDescription], [dtoProductCategory.Products].[MetaKeywords], [dtoProductCategory.Products].[MetaTitle], [dtoProductCategory.Products].[Name], [dtoProductCategory.Products].[OriginalPrice], [dtoProductCategory.Products].[Price], [dtoProductCategory.Products].[PromotionPrice], [dtoProductCategory.Products].[Status], [dtoProductCategory.Products].[Tags], [dtoProductCategory.Products].[ThumbnailImage], [dtoProductCategory.Products].[Unit], [dtoProductCategory.Products].[ViewCount]
+FROM [Products] AS [dtoProductCategory.Products]
+INNER JOIN (
+    SELECT [dtoProductCategory0].[Id]
+    FROM [ProductCategories] AS [dtoProductCategory0]
+) AS [t] ON [dtoProductCategory.Products].[CategoryId] = [t].[Id]
+ORDER BY [t].[Id]" (0723d8ff)
+2018-09-20T05:51:17.8543181+07:00 0HLGU64QQFEB3:00000004 [INF] Executed action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 251.3427ms. (50a9e262)
+2018-09-20T05:51:17.8569197+07:00 0HLGU64QQFEB3:00000004 [INF] Executing ObjectResult, writing value of type '"System.Collections.Generic.List`1[[DuongKhangDEV.Application.ViewModels.ProductCatalog.ProductCategoryViewModel, DuongKhangDEV.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (8a1b66c8)
+2018-09-20T05:51:17.8638069+07:00 0HLGU64QQFEB3:00000004 [INF] Executed action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" in 325.6239ms (afa2e885)
+2018-09-20T05:51:17.8699610+07:00 0HLGU64QQFEB3:00000004 [INF] Request finished in 343.1591ms 200 application/json; charset=utf-8 (791a596a)
+2018-09-20T05:51:18.0899171+07:00 0HLGU64QQFEB1:00000006 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin/product/GetAllPagingAsync?categoryId=&keyword=&status=-1&page=1&pageSize=3   (ca22a1cb)
+2018-09-20T05:51:18.0950641+07:00 0HLGU64QQFEB1:00000006 [INF] Route matched with "{area = \"Admin\", action = \"GetAllPagingAsync\", controller = \"Product\"}". Executing action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllPagingAsync (DuongKhangDEV.WebApp)" (a44c0341)
+2018-09-20T05:51:18.1039727+07:00 0HLGU64QQFEB1:00000006 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:18.1562488+07:00 0HLGU64QQFEB1:00000006 [INF] Executing action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllPagingAsync (DuongKhangDEV.WebApp)" with arguments (["", "", "-1", "1", "3"]) - Validation state: Valid (4e3479ed)
+2018-09-20T05:51:18.1771318+07:00 0HLGU64QQFEB1:00000006 [INF] Entity Framework Core "2.1.3-rtm-32065" initialized '"AppDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "MigrationsAssembly=DuongKhangDEV.Data.EF " (9958f5bb)
+2018-09-20T05:51:18.2503967+07:00 0HLGU64QQFEB1:00000006 [INF] Executed DbCommand ("69"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT COUNT(*)
+FROM [Products] AS [p]" (0723d8ff)
+2018-09-20T05:51:18.3532871+07:00 0HLGU64QQFEB1:00000006 [INF] Executed DbCommand ("89"ms) [Parameters=["@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [dtoProduct].[AllowAddedToCart], [dtoProduct].[AlwaysOnTheHomePage], [dtoProduct].[AlwaysOnTheMainMenu], [dtoProduct].[CategoryId], [dtoProduct].[Content], [dtoProduct].[DateCreated], [dtoProduct].[DateDeleted], [dtoProduct].[DateModified], [dtoProduct].[Description], [dtoProduct].[HomeFlag], [dtoProduct].[HotFlag], [dtoProduct].[HotNewFlag], [dtoProduct].[HotSalesFlag], [dtoProduct].[Id], [dtoProduct].[MetaAlias], [dtoProduct].[MetaDescription], [dtoProduct].[MetaKeywords], [dtoProduct].[MetaTitle], [dtoProduct].[Name], [dtoProduct].[OriginalPrice], [dtoProduct].[Price], CASE
+    WHEN [dtoProduct].[CategoryId] IS NULL
+    THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT)
+END, [dtoProduct.ProductCategory].[DateCreated] AS [DateCreated0], [dtoProduct.ProductCategory].[DateDeleted] AS [DateDeleted0], [dtoProduct.ProductCategory].[DateModified] AS [DateModified0], [dtoProduct.ProductCategory].[Description] AS [Description0], [dtoProduct.ProductCategory].[HomeFlag] AS [HomeFlag0], [dtoProduct.ProductCategory].[HomeOrder], [dtoProduct.ProductCategory].[MetaAlias] AS [MetaAlias0], [dtoProduct.ProductCategory].[MetaDescription] AS [MetaDescription0], [dtoProduct.ProductCategory].[MetaKeywords] AS [MetaKeywords0], [dtoProduct.ProductCategory].[MetaTitle] AS [MetaTitle0], [dtoProduct.ProductCategory].[Name] AS [Name0], [dtoProduct.ProductCategory].[ParentId], [dtoProduct.ProductCategory].[SortOrder], [dtoProduct.ProductCategory].[Status], [dtoProduct.ProductCategory].[ThumbnailImage], [dtoProduct.ProductCategory].[UniqueCode], [dtoProduct].[PromotionPrice], [dtoProduct].[Status] AS [Status0], [dtoProduct].[Tags], [dtoProduct].[ThumbnailImage] AS [ThumbnailImage0], [dtoProduct].[Unit], [dtoProduct].[ViewCount], [dtoProduct.ProductCategory].[Id]
+FROM [Products] AS [dtoProduct]
+INNER JOIN [ProductCategories] AS [dtoProduct.ProductCategory] ON [dtoProduct].[CategoryId] = [dtoProduct.ProductCategory].[Id]
+ORDER BY [dtoProduct].[Id], [dtoProduct.ProductCategory].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY" (0723d8ff)
+2018-09-20T05:51:18.4150236+07:00 0HLGU64QQFEB1:00000006 [INF] Executed DbCommand ("59"ms) [Parameters=["@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)"], CommandType='Text', CommandTimeout='30']"
+""SELECT [t].[Id], [t].[Id0], [dtoProduct.ProductCategory.Products].[AllowAddedToCart], [dtoProduct.ProductCategory.Products].[AlwaysOnTheHomePage], [dtoProduct.ProductCategory.Products].[AlwaysOnTheMainMenu], [dtoProduct.ProductCategory.Products].[CategoryId], [dtoProduct.ProductCategory.Products].[Content], [dtoProduct.ProductCategory.Products].[DateCreated], [dtoProduct.ProductCategory.Products].[DateDeleted], [dtoProduct.ProductCategory.Products].[DateModified], [dtoProduct.ProductCategory.Products].[Description], [dtoProduct.ProductCategory.Products].[HomeFlag], [dtoProduct.ProductCategory.Products].[HotFlag], [dtoProduct.ProductCategory.Products].[HotNewFlag], [dtoProduct.ProductCategory.Products].[HotSalesFlag], [dtoProduct.ProductCategory.Products].[Id] AS [Id1], [dtoProduct.ProductCategory.Products].[MetaAlias], [dtoProduct.ProductCategory.Products].[MetaDescription], [dtoProduct.ProductCategory.Products].[MetaKeywords], [dtoProduct.ProductCategory.Products].[MetaTitle], [dtoProduct.ProductCategory.Products].[Name], [dtoProduct.ProductCategory.Products].[OriginalPrice], [dtoProduct.ProductCategory.Products].[Price], [dtoProduct.ProductCategory.Products].[PromotionPrice], [dtoProduct.ProductCategory.Products].[Status], [dtoProduct.ProductCategory.Products].[Tags], [dtoProduct.ProductCategory.Products].[ThumbnailImage], [dtoProduct.ProductCategory.Products].[Unit], [dtoProduct.ProductCategory.Products].[ViewCount]
+FROM [Products] AS [dtoProduct.ProductCategory.Products]
+INNER JOIN (
+    SELECT [dtoProduct0].[Id], [dtoProduct.ProductCategory0].[Id] AS [Id0]
+    FROM [Products] AS [dtoProduct0]
+    INNER JOIN [ProductCategories] AS [dtoProduct.ProductCategory0] ON [dtoProduct0].[CategoryId] = [dtoProduct.ProductCategory0].[Id]
+    ORDER BY [dtoProduct0].[Id], [dtoProduct.ProductCategory0].[Id]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [t] ON [dtoProduct.ProductCategory.Products].[CategoryId] = [t].[Id0]
+ORDER BY [t].[Id], [t].[Id0]" (0723d8ff)
+2018-09-20T05:51:18.4221390+07:00 0HLGU64QQFEB1:00000006 [INF] Executed action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllPagingAsync (DuongKhangDEV.WebApp)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 259.7389ms. (50a9e262)
+2018-09-20T05:51:18.4252705+07:00 0HLGU64QQFEB1:00000006 [INF] Executing ObjectResult, writing value of type '"DuongKhangDEV.Utilities.Dtos.PagedResult`1[[DuongKhangDEV.Application.ViewModels.ProductCatalog.ProductViewModel, DuongKhangDEV.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (8a1b66c8)
+2018-09-20T05:51:18.4350288+07:00 0HLGU64QQFEB1:00000006 [INF] Executed action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllPagingAsync (DuongKhangDEV.WebApp)" in 331.3788ms (afa2e885)
+2018-09-20T05:51:18.4408716+07:00 0HLGU64QQFEB1:00000006 [INF] Request finished in 361.6973ms 200 application/json; charset=utf-8 (791a596a)
+2018-09-20T05:51:18.4974851+07:00 0HLGU64QQFEB4:00000005 [INF] Request starting HTTP/1.1 GET http://localhost:44368/client-side/images/products/product-1.jpg   (ca22a1cb)
+2018-09-20T05:51:18.5058270+07:00 0HLGU64QQFEB5:00000005 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin-side/vendors/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0   (ca22a1cb)
+2018-09-20T05:51:18.5073247+07:00 0HLGU64QQFEB4:00000005 [INF] Request finished in 18.6004ms 404  (791a596a)
+2018-09-20T05:51:18.5107358+07:00 0HLGU64QQFEB5:00000005 [INF] The file "/admin-side/vendors/font-awesome/fonts/fontawesome-webfont.woff2" was not modified (f1f8d725)
+2018-09-20T05:51:18.5163620+07:00 0HLGU64QQFEB5:00000005 [INF] Request finished in 13.0545ms 304 font/woff2 (791a596a)
+2018-09-20T05:51:24.8227050+07:00 0HLGU64QQFEB7:00000004 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin/product/GetAllCategories   (ca22a1cb)
+2018-09-20T05:51:24.8260283+07:00 0HLGU64QQFEB7:00000004 [INF] Route matched with "{area = \"Admin\", action = \"GetAllCategories\", controller = \"Product\"}". Executing action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" (a44c0341)
+2018-09-20T05:51:24.8283264+07:00 0HLGU64QQFEB7:00000004 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:24.8501594+07:00 0HLGU64QQFEB7:00000004 [INF] Executing action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" - Validation state: Valid (dad538d7)
+2018-09-20T05:51:24.8531912+07:00 0HLGU64QQFEB7:00000004 [INF] Entity Framework Core "2.1.3-rtm-32065" initialized '"AppDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "MigrationsAssembly=DuongKhangDEV.Data.EF " (9958f5bb)
+2018-09-20T05:51:24.8851558+07:00 0HLGU64QQFEB7:00000004 [INF] Executed DbCommand ("27"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [dtoProductCategory].[DateCreated], [dtoProductCategory].[DateDeleted], [dtoProductCategory].[DateModified], [dtoProductCategory].[Description], [dtoProductCategory].[HomeFlag], [dtoProductCategory].[HomeOrder], [dtoProductCategory].[Id], [dtoProductCategory].[MetaAlias], [dtoProductCategory].[MetaDescription], [dtoProductCategory].[MetaKeywords], [dtoProductCategory].[MetaTitle], [dtoProductCategory].[Name], [dtoProductCategory].[ParentId], [dtoProductCategory].[SortOrder], [dtoProductCategory].[Status], [dtoProductCategory].[ThumbnailImage], [dtoProductCategory].[UniqueCode]
+FROM [ProductCategories] AS [dtoProductCategory]
+ORDER BY [dtoProductCategory].[Id]" (0723d8ff)
+2018-09-20T05:51:24.9110545+07:00 0HLGU64QQFEB7:00000004 [INF] Executed DbCommand ("23"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [t].[Id], [dtoProductCategory.Products].[AllowAddedToCart], [dtoProductCategory.Products].[AlwaysOnTheHomePage], [dtoProductCategory.Products].[AlwaysOnTheMainMenu], [dtoProductCategory.Products].[CategoryId], [dtoProductCategory.Products].[Content], [dtoProductCategory.Products].[DateCreated], [dtoProductCategory.Products].[DateDeleted], [dtoProductCategory.Products].[DateModified], [dtoProductCategory.Products].[Description], [dtoProductCategory.Products].[HomeFlag], [dtoProductCategory.Products].[HotFlag], [dtoProductCategory.Products].[HotNewFlag], [dtoProductCategory.Products].[HotSalesFlag], [dtoProductCategory.Products].[Id] AS [Id0], [dtoProductCategory.Products].[MetaAlias], [dtoProductCategory.Products].[MetaDescription], [dtoProductCategory.Products].[MetaKeywords], [dtoProductCategory.Products].[MetaTitle], [dtoProductCategory.Products].[Name], [dtoProductCategory.Products].[OriginalPrice], [dtoProductCategory.Products].[Price], [dtoProductCategory.Products].[PromotionPrice], [dtoProductCategory.Products].[Status], [dtoProductCategory.Products].[Tags], [dtoProductCategory.Products].[ThumbnailImage], [dtoProductCategory.Products].[Unit], [dtoProductCategory.Products].[ViewCount]
+FROM [Products] AS [dtoProductCategory.Products]
+INNER JOIN (
+    SELECT [dtoProductCategory0].[Id]
+    FROM [ProductCategories] AS [dtoProductCategory0]
+) AS [t] ON [dtoProductCategory.Products].[CategoryId] = [t].[Id]
+ORDER BY [t].[Id]" (0723d8ff)
+2018-09-20T05:51:24.9148649+07:00 0HLGU64QQFEB7:00000004 [INF] Executed action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 61.8655ms. (50a9e262)
+2018-09-20T05:51:24.9176652+07:00 0HLGU64QQFEB7:00000004 [INF] Executing ObjectResult, writing value of type '"System.Collections.Generic.List`1[[DuongKhangDEV.Application.ViewModels.ProductCatalog.ProductCategoryViewModel, DuongKhangDEV.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (8a1b66c8)
+2018-09-20T05:51:24.9211027+07:00 0HLGU64QQFEB7:00000004 [INF] Executed action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" in 92.0768ms (afa2e885)
+2018-09-20T05:51:24.9244981+07:00 0HLGU64QQFEB7:00000004 [INF] Request finished in 101.5371ms 200 application/json; charset=utf-8 (791a596a)
+2018-09-20T05:51:24.9780583+07:00 0HLGU64QQFEB8:00000005 [INF] Request starting HTTP/1.1 GET http://localhost:44368/admin/product/GetAllCategories   (ca22a1cb)
+2018-09-20T05:51:24.9821302+07:00 0HLGU64QQFEB8:00000005 [INF] Route matched with "{area = \"Admin\", action = \"GetAllCategories\", controller = \"Product\"}". Executing action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" (a44c0341)
+2018-09-20T05:51:24.9857251+07:00 0HLGU64QQFEB8:00000005 [INF] Authorization was successful. (0d575a54)
+2018-09-20T05:51:25.0079399+07:00 0HLGU64QQFEB8:00000005 [INF] Executing action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" - Validation state: Valid (dad538d7)
+2018-09-20T05:51:25.0108620+07:00 0HLGU64QQFEB8:00000005 [INF] Entity Framework Core "2.1.3-rtm-32065" initialized '"AppDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "MigrationsAssembly=DuongKhangDEV.Data.EF " (9958f5bb)
+2018-09-20T05:51:25.0460103+07:00 0HLGU64QQFEB8:00000005 [INF] Executed DbCommand ("32"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [dtoProductCategory].[DateCreated], [dtoProductCategory].[DateDeleted], [dtoProductCategory].[DateModified], [dtoProductCategory].[Description], [dtoProductCategory].[HomeFlag], [dtoProductCategory].[HomeOrder], [dtoProductCategory].[Id], [dtoProductCategory].[MetaAlias], [dtoProductCategory].[MetaDescription], [dtoProductCategory].[MetaKeywords], [dtoProductCategory].[MetaTitle], [dtoProductCategory].[Name], [dtoProductCategory].[ParentId], [dtoProductCategory].[SortOrder], [dtoProductCategory].[Status], [dtoProductCategory].[ThumbnailImage], [dtoProductCategory].[UniqueCode]
+FROM [ProductCategories] AS [dtoProductCategory]
+ORDER BY [dtoProductCategory].[Id]" (0723d8ff)
+2018-09-20T05:51:25.0736560+07:00 0HLGU64QQFEB8:00000005 [INF] Executed DbCommand ("25"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT [t].[Id], [dtoProductCategory.Products].[AllowAddedToCart], [dtoProductCategory.Products].[AlwaysOnTheHomePage], [dtoProductCategory.Products].[AlwaysOnTheMainMenu], [dtoProductCategory.Products].[CategoryId], [dtoProductCategory.Products].[Content], [dtoProductCategory.Products].[DateCreated], [dtoProductCategory.Products].[DateDeleted], [dtoProductCategory.Products].[DateModified], [dtoProductCategory.Products].[Description], [dtoProductCategory.Products].[HomeFlag], [dtoProductCategory.Products].[HotFlag], [dtoProductCategory.Products].[HotNewFlag], [dtoProductCategory.Products].[HotSalesFlag], [dtoProductCategory.Products].[Id] AS [Id0], [dtoProductCategory.Products].[MetaAlias], [dtoProductCategory.Products].[MetaDescription], [dtoProductCategory.Products].[MetaKeywords], [dtoProductCategory.Products].[MetaTitle], [dtoProductCategory.Products].[Name], [dtoProductCategory.Products].[OriginalPrice], [dtoProductCategory.Products].[Price], [dtoProductCategory.Products].[PromotionPrice], [dtoProductCategory.Products].[Status], [dtoProductCategory.Products].[Tags], [dtoProductCategory.Products].[ThumbnailImage], [dtoProductCategory.Products].[Unit], [dtoProductCategory.Products].[ViewCount]
+FROM [Products] AS [dtoProductCategory.Products]
+INNER JOIN (
+    SELECT [dtoProductCategory0].[Id]
+    FROM [ProductCategories] AS [dtoProductCategory0]
+) AS [t] ON [dtoProductCategory.Products].[CategoryId] = [t].[Id]
+ORDER BY [t].[Id]" (0723d8ff)
+2018-09-20T05:51:25.0770270+07:00 0HLGU64QQFEB8:00000005 [INF] Executed action method "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)", returned result "Microsoft.AspNetCore.Mvc.OkObjectResult" in 66.7685ms. (50a9e262)
+2018-09-20T05:51:25.0796228+07:00 0HLGU64QQFEB8:00000005 [INF] Executing ObjectResult, writing value of type '"System.Collections.Generic.List`1[[DuongKhangDEV.Application.ViewModels.ProductCatalog.ProductCategoryViewModel, DuongKhangDEV.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (8a1b66c8)
+2018-09-20T05:51:25.0829307+07:00 0HLGU64QQFEB8:00000005 [INF] Executed action "DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs.ProductController.GetAllCategories (DuongKhangDEV.WebApp)" in 97.8889ms (afa2e885)
+2018-09-20T05:51:25.0856625+07:00 0HLGU64QQFEB8:00000005 [INF] Request finished in 108.3291ms 200 application/json; charset=utf-8 (791a596a)
