@@ -24,20 +24,20 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
     public class ProductService : WebServiceBase<Product, long, ProductViewModel>, IProductService
     {
         private readonly IRepository<Product, long> _productService;
-        private readonly IRepository<ProductImage, long> _productImageRepository;
-        private readonly IRepository<ProductTag, int> _productTagRepository;
-        private readonly IRepository<Tag, string> _tagRepository;
+        private readonly IRepository<ProductImage, long> _productImageService;
+        private readonly IRepository<ProductTag, int> _productTagService;
+        private readonly IRepository<Tag, string> _tagService;
 
         public ProductService(IRepository<Product, long> productService, 
-            IRepository<ProductImage, long> productImageRepository,
-            IRepository<ProductTag, int> productTagRepository,
-            IRepository<Tag, string> tagRepository,
+            IRepository<ProductImage, long> productImageService,
+            IRepository<ProductTag, int> productTagService,
+            IRepository<Tag, string> tagService,
             IUnitOfWork unitOfWork) : base(productService, unitOfWork)
         {
             _productService = productService;
-            _productImageRepository = productImageRepository;
-            _productTagRepository = productTagRepository;
-            _tagRepository = tagRepository;
+            _productImageService = productImageService;
+            _productTagService = productTagService;
+            _tagService = tagService;
         }
 
         public override async Task<ProductViewModel> InsertAsync(ProductViewModel productVm)
@@ -50,7 +50,7 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
                 foreach (string t in tags)
                 {
                     var tagId = TextHelper.ToUnsignString(t);
-                    if (!_tagRepository.GetAll().Where(x => x.Id == tagId).Any())
+                    if (!_tagService.GetAll().Where(x => x.Id == tagId).Any())
                     {
                         Tag tag = new Tag
                         {
@@ -58,14 +58,14 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
                             Name = t,
                             Type = CommonConstants.ProductTag
                         };
-                        await _tagRepository.InsertAsync(tag);
+                        await _tagService.InsertAsync(tag);
                     }
 
                     ProductTag productTag = new ProductTag
                     {
                         TagId = tagId
                     };
-                    await _productTagRepository.InsertAsync(productTag);
+                    await _productTagService.InsertAsync(productTag);
                 }
             }
 
@@ -77,8 +77,8 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
         public override async Task<ProductViewModel> UpdateAsync(ProductViewModel productVm)
         {
             var product = Mapper.Map<ProductViewModel, Product>(productVm);
-            var item = await _productTagRepository.GetAllAsync(x => x.ProductId == product.Id);
-            await _productTagRepository.DeleteRangeAsync(item);
+            var item = await _productTagService.GetAllAsync(x => x.ProductId == product.Id);
+            await _productTagService.DeleteRangeAsync(item);
 
             if (!string.IsNullOrEmpty(productVm.Tags))
             {
@@ -86,7 +86,7 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
                 foreach (string t in tags)
                 {
                     var tagId = TextHelper.ToUnsignString(t);
-                    if (!_tagRepository.GetAll().Where(x => x.Id == tagId).Any())
+                    if (!_tagService.GetAll().Where(x => x.Id == tagId).Any())
                     {
                         Tag tag = new Tag
                         {
@@ -94,14 +94,14 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
                             Name = t,
                             Type = CommonConstants.ProductTag
                         };
-                        await _tagRepository.InsertAsync(tag);
+                        await _tagService.InsertAsync(tag);
                     }
 
                     ProductTag productTag = new ProductTag
                     {
                         TagId = tagId
                     };
-                    await _productTagRepository.InsertAsync(productTag);
+                    await _productTagService.InsertAsync(productTag);
                 }
             }
            
@@ -230,8 +230,8 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
 
         public async Task<List<TagViewModel>> GetProductTagAsync(long productId)
         {
-            var tags = _tagRepository.GetAll();
-            var productTags = _productTagRepository.GetAll();
+            var tags = _tagService.GetAll();
+            var productTags = _productTagService.GetAll();
 
             var query = from t in tags
                         join pt in productTags
@@ -247,13 +247,13 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
 
         public async Task<List<ProductImageViewModel>> GetImagesAsync(long productId)
         {
-            return await _productImageRepository.GetAll(x => x.ProductId == productId)
+            return await _productImageService.GetAll(x => x.ProductId == productId)
                 .ProjectTo<ProductImageViewModel>().ToListAsync();
         }
 
         public async Task<List<ProductImage>> AddImagesAsync(long productId, string[] images)
         {
-            await _productImageRepository.DeleteRangeAsync(_productImageRepository.GetAll(x => x.ProductId == productId).ToList());
+            await _productImageService.DeleteRangeAsync(_productImageService.GetAll(x => x.ProductId == productId).ToList());
 
             List<ProductImage> imgEntities = new List<ProductImage>();
             foreach (var image in images)
@@ -266,7 +266,7 @@ namespace DuongKhangDEV.Application.Implementation.ProductCatalogs
                 });
             }
 
-            var result = await _productImageRepository.InsertRangeAsync(imgEntities);
+            var result = await _productImageService.InsertRangeAsync(imgEntities);
             return result;
         }
 

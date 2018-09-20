@@ -23,7 +23,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             var model = await _roleService.GetAllAsync();
 
@@ -31,22 +31,22 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var model = await _roleService.GetById(id);
+            var model = await _roleService.GetByIdAsync(id);
 
             return new OkObjectResult(model);
         }
 
         [HttpGet]
-        public IActionResult GetAllPaging(string keyword, int page, int pageSize)
+        public async Task<IActionResult> GetAllPagingAsync(string keyword, int page, int pageSize)
         {
-            var model = _roleService.GetAllPagingAsync(keyword, page, pageSize);
+            var model = await _roleService.GetAllPagingAsync(keyword, page, pageSize);
             return new OkObjectResult(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveEntity(AppRoleViewModel roleVm)
+        public async Task<IActionResult> SaveEntityAsync(AppRoleViewModel roleVm)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -77,9 +77,9 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult ListAllFunction(Guid roleId)
+        public async Task<IActionResult> ListAllFunctionAsync(Guid roleId)
         {
-            var functions = _roleService.GetListFunctionWithRole(roleId);
+            var functions = await _roleService.GetListFunctionWithRoleAsync(roleId);
             return new OkObjectResult(functions);
         }
 

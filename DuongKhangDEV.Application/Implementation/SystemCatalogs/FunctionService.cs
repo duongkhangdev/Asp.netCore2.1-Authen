@@ -17,66 +17,47 @@ using DuongKhangDEV.Data.Entities.SystemCatalog;
 
 namespace DuongKhangDEV.Application.Implementation.SystemCatalog
 {
-    public class FunctionService : IFunctionService
+    public class FunctionService : WebServiceBase<Function, string, FunctionViewModel>, IFunctionService
     {
-        private IRepository<Function, string> _functionRepository;
-        private IRepository<Permission, int> _permissionRepository;
+        private IRepository<Function, string> _functionService;
+        private IRepository<Permission, int> _permissionService;
         private RoleManager<AppRole> _roleManager;
         private UserManager<AppUser> _userManager;
         private IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public FunctionService(IMapper mapper,
-            IRepository<Function, string> functionRepository,
+        public FunctionService(
+            IRepository<Function, string> functionService,
              RoleManager<AppRole> roleManager,
               UserManager<AppUser> userManager,
-             IRepository<Permission, int> permissionRepository,
-            IUnitOfWork unitOfWork)
+             IRepository<Permission, int> permissionService,
+            IUnitOfWork unitOfWork) : base(functionService, unitOfWork)
         {
-            _functionRepository = functionRepository;
+            _functionService = functionService;
             _userManager = userManager;
             _roleManager = roleManager;
-            _permissionRepository = permissionRepository;
+            _permissionService = permissionService;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public bool CheckExistedId(string id)
         {
-            return _functionRepository.GetById(id) != null;
+            return _functionService.GetById(id) != null;
         }
 
-        public void Add(FunctionViewModel functionVm)
+        public async Task<List<FunctionViewModel>> GetAllFilterAsync(string filter)
         {
-            var function = Mapper.Map<FunctionViewModel, Function>(functionVm);
-            _functionRepository.Insert(function);
-        }
-
-        public void Delete(string id)
-        {
-            _functionRepository.Delete(id);
-        }
-
-        public FunctionViewModel GetById(string id)
-        {
-            var function = _functionRepository.GetById(id);
-            return Mapper.Map<Function, FunctionViewModel>(function);
-        }
-
-        public Task<List<FunctionViewModel>> GetAll(string filter)
-        {
-            var query = _functionRepository.GetAll(x => x.Status == Status.Active);
+            var query = _functionService.GetAll(x => x.Status == Status.Active);
             if (!string.IsNullOrEmpty(filter))
             {
                 query = query.Where(x => x.Name.Contains(filter));
             }
 
-            return query.OrderBy(x => x.ParentId).ProjectTo<FunctionViewModel>().ToListAsync();
+            return await query.OrderBy(x => x.ParentId).ProjectTo<FunctionViewModel>().ToListAsync();
         }
 
         public IEnumerable<FunctionViewModel> GetAllWithParentId(string parentId)
         {
-            return _functionRepository.GetAll(x => x.ParentId == parentId).ProjectTo<FunctionViewModel>();
+            return _functionService.GetAll(x => x.ParentId == parentId).ProjectTo<FunctionViewModel>();
         }
 
         public async Task<List<FunctionViewModel>> GetAllWithPermission(string userName)
@@ -84,86 +65,46 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             var user = await _userManager.FindByNameAsync(userName);
             var roles = await _userManager.GetRolesAsync(user);
 
-            var query = (from f in _functionRepository.GetAll()
-                         join p in _permissionRepository.GetAll() on f.Id equals p.FunctionId
+            var query = (from f in _functionService.GetAll()
+                         join p in _permissionService.GetAll() on f.Id equals p.FunctionId
                          join r in _roleManager.Roles on p.RoleId equals r.Id
                          where roles.Contains(r.Name)
                          select f);
 
             var parentIds = query.Select(x => x.ParentId).Distinct();
 
-            query = query.Union(_functionRepository.GetAll().Where(f => parentIds.Contains(f.Id)));
+            query = query.Union(_functionService.GetAll().Where(f => parentIds.Contains(f.Id)));
 
             return await query.OrderBy(x => x.ParentId).ProjectTo<FunctionViewModel>().ToListAsync();
         }
 
-        public PagedResult<FunctionViewModel> GetAllPaging(string keyword, int page, int pageSize)
-        {
-            var query = _functionRepository.GetAll();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                query = query.Where(x => x.Name.Contains(keyword));
-            }
-
-            int totalRow = query.Count();
-            var data = query.OrderByDescending(x => x.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize);
-
-            var paginationSet = new PagedResult<FunctionViewModel>()
-            {
-                Results = data.ProjectTo<FunctionViewModel>().ToList(),
-                CurrentPage = page,
-                RowCount = totalRow,
-                PageSize = pageSize
-            };
-
-            return paginationSet;
-        }
-
-        public void Save()
-        {
-            _unitOfWork.Commit();
-        }
-
-        public void Update(FunctionViewModel functionVm)
-        {
-            var function = Mapper.Map<FunctionViewModel, Function>(functionVm);
-            _functionRepository.Update(function);
-        }
-
         public void ReOrder(string sourceId, string targetId)
         {
-            var source = _functionRepository.GetById(sourceId);
-            var target = _functionRepository.GetById(targetId);
+            var source = _functionService.GetById(sourceId);
+            var target = _functionService.GetById(targetId);
             int tempOrder = source.SortOrder;
 
             source.SortOrder = target.SortOrder;
             target.SortOrder = tempOrder;
 
-            _functionRepository.Update(source);
-            _functionRepository.Update(target);
+            _functionService.Update(source);
+            _functionService.Update(target);
         }
 
         public void UpdateParentId(string sourceId, string targetId, Dictionary<string, string> items)
         {
             //Update parent id for source
-            var category = _functionRepository.GetById(sourceId);
+            var category = _functionService.GetById(sourceId);
             category.ParentId = targetId;
-            _functionRepository.Update(category);
+            _functionService.Update(category);
 
             //Get all sibling
-            var sibling = _functionRepository.GetAll(x => items.ContainsKey(x.Id.ToString()));
+            var sibling = _functionService.GetAll(x => items.ContainsKey(x.Id.ToString()));
             foreach (var child in sibling)
             {
                 //child.SortOrder = items[child.Id.ToString()];
-                _functionRepository.Update(child);
+                _functionService.Update(child);
             }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

@@ -66,7 +66,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
             var model = await _productCategoryService.GetByIdAsync(id);
 
@@ -74,7 +74,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveEntity(ProductCategoryViewModel productCategoryVm)
+        public async Task<IActionResult> SaveEntityAsync(ProductCategoryViewModel productCategoryVm)
         {
             if (!ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -110,6 +110,21 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers.ProductCatalogs
             else
             {
                 await _productCategoryService.DeleteAsync(id);
+
+                return new OkObjectResult(id);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRangeAsync(int[] id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(ModelState);
+            }
+            else
+            {
+                await _productCategoryService.DeleteRangeAsync(id);
 
                 return new OkObjectResult(id);
             }

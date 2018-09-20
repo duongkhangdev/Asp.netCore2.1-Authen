@@ -37,7 +37,9 @@
                     {
                         <button class="btn btn-success btn-sm" id="btn-create" type="button">Tạo mới</button>
                     }
-                    <button class="btn btn-success btn-sm" id="btn-import" type="button"><span>Tạo mới</span></button>
+                    <a class="btn btn-danger btn-sm" href="~/templates/ProductImportTemplate.xlsx">Tải mẫu</a>
+                    <button class="btn btn-primary btn-sm" id="btn-import" type="button"><i class="fa fa-file-excel-o"></i>Nhập Excel</button>
+                    <button class="btn btn-default btn-sm" id="btn-export" type="button"><i class="fa fa-forward"></i>Xuất Excel</button>
 
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                         <div class="form-group">
@@ -132,8 +134,8 @@
 </script>
 
 @await Html.PartialAsync("_AddEditModal.cshtml")
-@*@await Html.PartialAsync("_ImportExcelModal.cshtml")
-    @await Html.PartialAsync("_QuantityManagement.cshtml")
+@await Html.PartialAsync("_ImportExcelModal.cshtml")
+@* @await Html.PartialAsync("_QuantityManagement.cshtml")
     @await Html.PartialAsync("_ImageManagement.cshtml")
     @await Html.PartialAsync("_WholePriceManagement.cshtml")*@
 

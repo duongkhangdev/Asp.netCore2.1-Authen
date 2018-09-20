@@ -15,17 +15,17 @@ namespace DuongKhangDEV.Application.Interfaces.SystemCatalog
 
         Task<List<AppRoleViewModel>> GetAllAsync();
 
-        PagedResult<AppRoleViewModel> GetAllPagingAsync(string keyword, int page, int pageSize);
+        Task<PagedResult<AppRoleViewModel>> GetAllPagingAsync(string keyword, int page, int pageSize);
 
-        Task<AppRoleViewModel> GetById(Guid id);
+        Task<AppRoleViewModel> GetByIdAsync(Guid id);
 
 
         Task UpdateAsync(AppRoleViewModel userVm);
 
-        List<PermissionViewModel> GetListFunctionWithRole(Guid roleId);
+        Task<List<PermissionViewModel>> GetListFunctionWithRoleAsync(Guid roleId);
 
         void SavePermission(List<PermissionViewModel> permissions, Guid roleId);
 
-        Task<bool> CheckPermission(string functionId, string action, string[] roles);
+        Task<bool> CheckPermissionAsync(string functionId, string action, string[] roles);
     }
 }

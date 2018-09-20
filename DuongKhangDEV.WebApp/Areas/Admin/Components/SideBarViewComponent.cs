@@ -46,7 +46,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Components
 
             if (roles != null && roles.Value.Split(";").Contains(CommonConstants.AppRole.AdminRole))
             {
-                functions = await _functionService.GetAll(string.Empty);
+                functions = await _functionService.GetAllFilterAsync(string.Empty);
             }
             else
             {

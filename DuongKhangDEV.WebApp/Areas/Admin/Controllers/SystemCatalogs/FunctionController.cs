@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using DuongKhangDEV.Application.ViewModels.SystemCatalog;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using DuongKhangDEV.Application.Interfaces.SystemCatalog;
+using System.Linq.Expressions;
+using DuongKhangDEV.Data.Entities.SystemCatalog;
 
 namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
 {
@@ -28,16 +30,16 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllFillter(string filter)
+        public async Task<IActionResult> GetAllFilterAsync(string filter)
         {
-            var model = _functionService.GetAll(filter);
+            var model = await _functionService.GetAllFilterAsync(filter);
             return new ObjectResult(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var model = await _functionService.GetAll(string.Empty);
+            var model = await _functionService.GetAllFilterAsync(string.Empty);
             var rootFunctions = model.Where(c => c.ParentId == null);
             var items = new List<FunctionViewModel>();
             foreach (var function in rootFunctions)
@@ -51,22 +53,33 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetByIdAsync(string id)
         {
-            var model = _functionService.GetById(id);
+            var model = await _functionService.GetByIdAsync(id);
 
             return new ObjectResult(model);
         }
 
         [HttpGet]
-        public IActionResult GetAllPaging(string keyword, int page, int pageSize)
-        {
-            var model = _functionService.GetAllPaging(keyword, page, pageSize);
-            return new OkObjectResult(model);
+        public async Task<IActionResult> GetAllPagingAsync(string keyword, int page, int pageSize)
+        {            
+            if (!String.IsNullOrEmpty(keyword))
+            {
+                Expression<Func<Function, bool>> myExpression;
+                myExpression = i => i.Name.Contains(keyword);
+
+                var model = await _functionService.GetAllPagingAsync(myExpression, page, pageSize);
+                return new OkObjectResult(model);
+            }
+            else
+            {
+                var model = await _functionService.GetAllPagingAsync(page, pageSize);
+                return new OkObjectResult(model);
+            }            
         }
 
         [HttpPost]
-        public IActionResult SaveEntity(FunctionViewModel functionVm)
+        public async Task<IActionResult> SaveEntityAsync(FunctionViewModel functionVm)
         {
             if (!ModelState.IsValid)
             {
@@ -77,13 +90,13 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
             {
                 if (functionVm.Id == "")
                 {
-                    _functionService.Add(functionVm);
+                    await _functionService.InsertAsync(functionVm);
                 }
                 else
                 {
-                    _functionService.Update(functionVm);
+                   await _functionService.UpdateAsync(functionVm);
                 }
-                _functionService.Save();
+                
                 return new OkObjectResult(functionVm);
             }
         }
@@ -104,7 +117,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
                 else
                 {
                     _functionService.UpdateParentId(sourceId, targetId, items);
-                    _functionService.Save();
+                    
                     return new OkResult();
                 }
             }
@@ -126,14 +139,14 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
                 else
                 {
                     _functionService.ReOrder(sourceId, targetId);
-                    _functionService.Save();
+                    
                     return new OkObjectResult(sourceId);
                 }
             }
         }
 
         [HttpPost]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -141,13 +154,14 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
             }
             else
             {
-                _functionService.Delete(id);
-                _functionService.Save();
+                await _functionService.DeleteAsync(id);
+               
                 return new OkObjectResult(id);
             }
         }
 
         #region Private Functions
+
         private void GetByParentId(IEnumerable<FunctionViewModel> allFunctions,
             FunctionViewModel parent, IList<FunctionViewModel> items)
         {
@@ -161,6 +175,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
                 GetByParentId(functionsEntities, cat, items);
             }
         }
+
         #endregion
     }
 }

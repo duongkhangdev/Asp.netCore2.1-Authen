@@ -45,48 +45,7 @@
         });
 
         $('#btnSaveM').on('click', function (e) {
-            if ($('#frmMaintainance').valid()) {
-                e.preventDefault();
-                var id = $('#hidIdM').val();
-                var name = $('#txtNameM').val();
-                var url = $('#txtAliasM').val();
-                var parentId = $('#ddlCategoryIdM').combotree('getValue');
-                var iconCss = $('#txtIconCssM').val();
-                var sortOrder = $('#txtOrderM').val();
-                var status = $('#ckStatusM').prop('checked') === true ? 1 : 0;
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/Function/SaveEntity",
-                    data: {
-                        Id: id,
-                        Name: name,
-                        URL: url,
-                        Status: status,
-                        ParentId: parentId,
-                        IconCss: iconCss,
-                        SortOrder: sortOrder
-                    },
-                    dataType: "json",
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function () {
-                        tedu.notify('Lưu dữ liệu thành công', 'success');
-                        $('#modal-add-edit').modal('hide');
-                        resetFormMaintainance();
-
-                        tedu.stopLoading();
-                        loadData(true);
-                    },
-                    error: function () {
-                        tedu.notify('Có lỗi xảy ra', 'error');
-                        tedu.stopLoading();
-                    }
-                });
-                return false;
-            }
-            return false;
+            saveFunction(e);
         });
 
         $('body').on('click', '.btn-delete', function (e) {
@@ -99,7 +58,7 @@
     function loadDetails(that) {
         $.ajax({
             type: "GET",
-            url: "/Admin/Function/GetById",
+            url: "/Admin/Function/GetByIdAsync",
             data: { id: that },
             dataType: "json",
             beforeSend: function () {
@@ -126,11 +85,56 @@
         });
     }
 
+    function saveFunction(e) {
+        if ($('#frmMaintainance').valid()) {
+            e.preventDefault();
+            var id = $('#hidIdM').val();
+            var name = $('#txtNameM').val();
+            var url = $('#txtAliasM').val();
+            var parentId = $('#ddlCategoryIdM').combotree('getValue');
+            var iconCss = $('#txtIconCssM').val();
+            var sortOrder = $('#txtOrderM').val();
+            var status = $('#ckStatusM').prop('checked') === true ? 1 : 0;
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Function/SaveEntityAsync",
+                data: {
+                    Id: id,
+                    Name: name,
+                    URL: url,
+                    Status: status,
+                    ParentId: parentId,
+                    IconCss: iconCss,
+                    SortOrder: sortOrder
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    tedu.startLoading();
+                },
+                success: function () {
+                    tedu.notify('Lưu dữ liệu thành công', 'success');
+                    $('#modal-add-edit').modal('hide');
+                    resetFormMaintainance();
+
+                    tedu.stopLoading();
+                    loadData(true);
+                },
+                error: function () {
+                    tedu.notify('Có lỗi xảy ra', 'error');
+                    tedu.stopLoading();
+                }
+            });
+            return false;
+        }
+        return false;
+    }
+
     function deleteFunction(that){
         tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
             $.ajax({
                 type: "POST",
-                url: "/Admin/Function/Delete",
+                url: "/Admin/Function/DeleteAsync",
                 data: { id: that },
                 dataType: "json",
                 beforeSend: function () {
@@ -160,7 +164,7 @@
     function loadData(isPageChanged) {
         $.ajax({
             type: "GET",
-            url: "/admin/Function/GetAllPaging",
+            url: "/admin/Function/GetAllPagingAsync",
             data: {
                 keyword: $('#txt-search-keyword').val(),
                 page: tedu.configs.pageIndex,
@@ -233,7 +237,7 @@
 
     function initTreeDropDownCategory(selectedId) {
         $.ajax({
-            url: "/Admin/Function/GetAll",
+            url: "/Admin/Function/GetAllAsync",
             type: 'GET',
             dataType: 'json',
             async: false,

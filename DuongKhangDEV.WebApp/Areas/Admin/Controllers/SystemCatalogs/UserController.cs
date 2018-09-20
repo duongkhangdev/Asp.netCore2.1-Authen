@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
 using DuongKhangDEV.WebApp.Authorization;
 using DuongKhangDEV.Application.Interfaces.SystemCatalog;
+using System.Linq.Expressions;
+using DuongKhangDEV.Data.Entities.SystemCatalog;
 
 namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
 {
@@ -32,7 +34,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             var model = await _userService.GetAllAsync();
 
@@ -40,22 +42,22 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetByIdAsync(string id)
         {
-            var model = await _userService.GetById(id);
+            var model = await _userService.GetByIdAsync(id);
 
             return new OkObjectResult(model);
         }
 
         [HttpGet]
-        public IActionResult GetAllPaging(string keyword, int page, int pageSize)
+        public virtual async Task<IActionResult> GetAllPagingAsync(string keyword, int page, int pageSize)
         {
-            var model = _userService.GetAllPagingAsync(keyword, page, pageSize);
+            var model = await _userService.GetAllPagingAsync(keyword, page, pageSize);
             return new OkObjectResult(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveEntity(AppUserViewModel userVm)
+        public async Task<IActionResult> SaveEntityAsync(AppUserViewModel userVm)
         {
             if (!ModelState.IsValid)
             {
@@ -77,7 +79,7 @@ namespace DuongKhangDEV.WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             if (!ModelState.IsValid)
             {

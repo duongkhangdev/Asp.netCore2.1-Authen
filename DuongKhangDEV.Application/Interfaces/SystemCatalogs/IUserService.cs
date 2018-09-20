@@ -15,10 +15,9 @@ namespace DuongKhangDEV.Application.Interfaces.SystemCatalog
 
         Task<List<AppUserViewModel>> GetAllAsync();
 
-        PagedResult<AppUserViewModel> GetAllPagingAsync(string keyword, int page, int pageSize);
+        Task<PagedResult<AppUserViewModel>> GetAllPagingAsync(string keyword, int page, int pageSize);
 
-        Task<AppUserViewModel> GetById(string id);
-
+        Task<AppUserViewModel> GetByIdAsync(string id);
 
         Task UpdateAsync(AppUserViewModel userVm);
     }

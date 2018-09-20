@@ -51,126 +51,143 @@
         $('body').on('click', '.btn-edit', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                url: "/Admin/Role/GetById",
-                data: { id: that },
-                dataType: "json",
-                beforeSend: function () {
-                    tedu.startLoading();
-                },
-                success: function (response) {
-                    var data = response;
-                    $('#hidId').val(data.Id);
-                    $('#txtName').val(data.Name);
-                    $('#txtDescription').val(data.Description);
-                    $('#modal-add-edit').modal('show');
-                    tedu.stopLoading();
-                },
-                error: function (status) {
-                    tedu.notify('Có lỗi xảy ra', 'error');
-                    tedu.stopLoading();
-                }
-            });
+            loadDetails(that);
         });
 
         $('#btnSave').on('click', function (e) {
-            if ($('#frmMaintainance').valid()) {
-                e.preventDefault();
-                var id = $('#hidId').val();
-                var name = $('#txtName').val();
-                var description = $('#txtDescription').val();
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/Role/SaveEntity",
-                    data: {
-                        Id: id,
-                        Name: name,
-                        Description: description,
-                    },
-                    dataType: "json",
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function (response) {
-                        tedu.notify('Lưu dữ liệu thành công', 'success');
-                        $('#modal-add-edit').modal('hide');
-                        resetFormMaintainance();
-                        tedu.stopLoading();
-                        loadData(true);
-                    },
-                    error: function () {
-                        tedu.notify('Đã có lỗi xảy ra', 'error');
-                        tedu.stopLoading();
-                    }
-                });
-                return false;
-            }
+            saveRole(e);
         });
 
         $('body').on('click', '.btn-delete', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
-            tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/Role/Delete",
-                    data: { id: that },
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function (response) {
-                        tedu.notify('Xoá thành công', 'success');
-                        tedu.stopLoading();
-                        loadData();
-                    },
-                    error: function (status) {
-                        tedu.notify('Xoá không thành công', 'error');
-                        tedu.stopLoading();
-                    }
-                });
-            });
+            deleteRole(that);
         });
 
         // Lưu quyền: _AssignPermission
         $("#btnSavePermission").off('click').on('click', function () {
-            var listPermmission = [];
-            $.each($('#tblFunction tbody tr'), function (i, item) {
-                listPermmission.push({
-                    RoleId: $('#hidRoleId').val(),
-                    FunctionId: $(item).data('id'),
-                    CanRead: $(item).find('.ckView').first().prop('checked'),
-                    CanCreate: $(item).find('.ckAdd').first().prop('checked'),
-                    CanUpdate: $(item).find('.ckEdit').first().prop('checked'),
-                    CanDelete: $(item).find('.ckDelete').first().prop('checked'),
-                });
-            });
+            savePermissions();
+        });
+    };
+
+    function loadDetails(that) {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Role/GetByIdAsync",
+            data: { id: that },
+            dataType: "json",
+            beforeSend: function () {
+                tedu.startLoading();
+            },
+            success: function (response) {
+                var data = response;
+                $('#hidId').val(data.Id);
+                $('#txtName').val(data.Name);
+                $('#txtDescription').val(data.Description);
+
+                $('#modal-add-edit').modal('show');
+                tedu.stopLoading();
+            },
+            error: function (status) {
+                tedu.notify('Có lỗi xảy ra', 'error');
+                tedu.stopLoading();
+            }
+        });
+    }
+
+    function saveRole(e) {
+        if ($('#frmMaintainance').valid()) {
+            e.preventDefault();
+            var id = $('#hidId').val();
+            var name = $('#txtName').val();
+            var description = $('#txtDescription').val();
+
             $.ajax({
                 type: "POST",
-                url: "/admin/role/SavePermission",
+                url: "/Admin/Role/SaveEntityAsync",
                 data: {
-                    listPermmission: listPermmission,
-                    roleId: $('#hidRoleId').val()
+                    Id: id,
+                    Name: name,
+                    Description: description,
                 },
+                dataType: "json",
                 beforeSend: function () {
                     tedu.startLoading();
                 },
                 success: function (response) {
-                    tedu.notify('Lưu quyền người dùng thành công', 'success');
-                    $('#modal-grantpermission').modal('hide');
+                    tedu.notify('Lưu dữ liệu thành công', 'success');
+                    $('#modal-add-edit').modal('hide');
+                    resetFormMaintainance();
                     tedu.stopLoading();
+                    loadData(true);
                 },
                 error: function () {
                     tedu.notify('Đã có lỗi xảy ra', 'error');
                     tedu.stopLoading();
                 }
             });
+            return false;
+        }
+    }
+
+    function deleteRole(that) {
+        tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Role/DeleteAsync",
+                data: { id: that },
+                beforeSend: function () {
+                    tedu.startLoading();
+                },
+                success: function (response) {
+                    tedu.notify('Xoá thành công', 'success');
+                    tedu.stopLoading();
+                    loadData();
+                },
+                error: function (status) {
+                    tedu.notify('Xoá không thành công', 'error');
+                    tedu.stopLoading();
+                }
+            });
         });
-    };
+    }
+
+    function savePermissions() {
+        var listPermmission = [];
+        $.each($('#tblFunction tbody tr'), function (i, item) {
+            listPermmission.push({
+                RoleId: $('#hidRoleId').val(),
+                FunctionId: $(item).data('id'),
+                CanRead: $(item).find('.ckView').first().prop('checked'),
+                CanCreate: $(item).find('.ckAdd').first().prop('checked'),
+                CanUpdate: $(item).find('.ckEdit').first().prop('checked'),
+                CanDelete: $(item).find('.ckDelete').first().prop('checked'),
+            });
+        });
+        $.ajax({
+            type: "POST",
+            url: "/admin/role/SavePermission",
+            data: {
+                listPermmission: listPermmission,
+                roleId: $('#hidRoleId').val()
+            },
+            beforeSend: function () {
+                tedu.startLoading();
+            },
+            success: function (response) {
+                tedu.notify('Lưu quyền người dùng thành công', 'success');
+                $('#modal-grantpermission').modal('hide');
+                tedu.stopLoading();
+            },
+            error: function () {
+                tedu.notify('Đã có lỗi xảy ra', 'error');
+                tedu.stopLoading();
+            }
+        });
+    }
 
     function loadFunctionList(callback) {
-        var strUrl = "/admin/Function/GetAll";
+        var strUrl = "/admin/Function/GetAllAsync";
         return $.ajax({
             type: "GET",
             url: strUrl,
@@ -253,7 +270,7 @@
 
     // Liệt kê danh sách quyền khi Edit: _AssignPermission
     function fillPermission(roleId) {
-        var strUrl = "/Admin/Role/ListAllFunction";
+        var strUrl = "/Admin/Role/ListAllFunctionAsync";
         return $.ajax({
             type: "POST",
             url: strUrl,
@@ -314,7 +331,7 @@
     function loadData(isPageChanged) {
         $.ajax({
             type: "GET",
-            url: "/admin/role/GetAllPaging",
+            url: "/admin/role/GetAllPagingAsync",
             data: {
                 keyword: $('#txtKeyword').val(),
                 page: tedu.configs.pageIndex,

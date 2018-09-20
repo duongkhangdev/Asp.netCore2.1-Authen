@@ -26,27 +26,7 @@
         });
 
         $("#fileInputImage").on('change', function () {
-            var fileUpload = $(this).get(0);
-            var files = fileUpload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                data.append(files[i].name, files[i]);
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/Admin/Upload/UploadImage",
-                contentType: false,
-                processData: false,
-                data: data,
-                success: function (path) {
-                    $('#txtImage').val(path);
-                    tedu.notify('Tải ảnh lên thành công!', 'success');
-                },
-                error: function () {
-                    tedu.notify('Có lỗi khi tải file!', 'error');
-                }
-            });
+            fileInputImage();
         });
 
         $('body').on('click', '.btn-edit', function (e) {
@@ -62,71 +42,38 @@
         });
 
         $('#btnSave').on('click', function (e) {
-            if ($('#frmMaintainance').valid()) {
-                e.preventDefault();
-                var id = parseInt($('#hidIdM').val());
-                var name = $('#txtNameM').val();
-                var parentId = $('#ddlCategoryIdM').combotree('getValue');
-                var description = $('#txtDescM').val();
-                var uniqueCode = $('#txtAliasM').val();
+            saveProductCategory(e);
+        });
+    }
 
-                var image = $('#txtImage').val();
-                var order = parseInt($('#txtOrderM').val());
-                var homeOrder = $('#txtHomeOrderM').val();
+    function fileInputImage() {
+        var fileUpload = $(this).get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
 
-                var metaKeyword = $('#txtSeoKeywordM').val();
-                var metaDescription = $('#txtSeoDescriptionM').val();
-                var metaTitle = $('#txtSeoPageTitleM').val();
-                var metaAlias = $('#txtSeoAliasM').val();
-                var status = $('#ckStatusM').prop('checked') == true ? 1 : 0;
-                var showHome = $('#ckShowHomeM').prop('checked');
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/ProductCategory/SaveEntity",
-                    data: {
-                        Id: id,
-                        Name: name,
-                        Description: description,
-                        UniqueCode : uniqueCode,
-                        ParentId: parentId,
-                        HomeOrder: homeOrder,
-                        SortOrder: order,
-                        HomeFlag: showHome,
-                        ThumbnailImage: image,
-                        Status: status,
-                        MetaTitle: metaTitle,
-                        MetaAlias: metaAlias,
-                        MetaKeywords: metaKeyword,
-                        MetaDescription: metaDescription
-                    },
-                    dataType: "json",
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function (response) {
-                        tedu.notify('Lưu dữ liệu thành công', 'success');
-                        $('#modal-add-edit').modal('hide');
-
-                        resetFormMaintainance();
-
-                        tedu.stopLoading();
-                        loadData(true);
-                    },
-                    error: function () {
-                        tedu.notify('Đã có lỗi xảy ra', 'error');
-                        tedu.stopLoading();
-                    }
-                });
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Upload/UploadImage",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (path) {
+                $('#txtImage').val(path);
+                tedu.notify('Tải ảnh lên thành công!', 'success');
+            },
+            error: function () {
+                tedu.notify('Có lỗi khi tải file!', 'error');
             }
-            return false;
         });
     }
 
     function loadDetails(that) {
         $.ajax({
             type: "GET",
-            url: "/Admin/ProductCategory/GetById",
+            url: "/Admin/ProductCategory/GetByIdAsync",
             data: { id: that },
             dataType: "json",
             beforeSend: function () {
@@ -163,11 +110,72 @@
         });
     }
 
+    function saveProductCategory(e) {
+        if ($('#frmMaintainance').valid()) {
+            e.preventDefault();
+            var id = parseInt($('#hidIdM').val());
+            var name = $('#txtNameM').val();
+            var parentId = $('#ddlCategoryIdM').combotree('getValue');
+            var description = $('#txtDescM').val();
+            var uniqueCode = $('#txtAliasM').val();
+
+            var image = $('#txtImage').val();
+            var order = parseInt($('#txtOrderM').val());
+            var homeOrder = $('#txtHomeOrderM').val();
+
+            var metaKeyword = $('#txtSeoKeywordM').val();
+            var metaDescription = $('#txtSeoDescriptionM').val();
+            var metaTitle = $('#txtSeoPageTitleM').val();
+            var metaAlias = $('#txtSeoAliasM').val();
+            var status = $('#ckStatusM').prop('checked') == true ? 1 : 0;
+            var showHome = $('#ckShowHomeM').prop('checked');
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/ProductCategory/SaveEntityAsync",
+                data: {
+                    Id: id,
+                    Name: name,
+                    Description: description,
+                    UniqueCode: uniqueCode,
+                    ParentId: parentId,
+                    HomeOrder: homeOrder,
+                    SortOrder: order,
+                    HomeFlag: showHome,
+                    ThumbnailImage: image,
+                    Status: status,
+                    MetaTitle: metaTitle,
+                    MetaAlias: metaAlias,
+                    MetaKeywords: metaKeyword,
+                    MetaDescription: metaDescription
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    tedu.startLoading();
+                },
+                success: function (response) {
+                    tedu.notify('Lưu dữ liệu thành công', 'success');
+                    $('#modal-add-edit').modal('hide');
+
+                    resetFormMaintainance();
+
+                    tedu.stopLoading();
+                    loadData(true);
+                },
+                error: function () {
+                    tedu.notify('Đã có lỗi xảy ra', 'error');
+                    tedu.stopLoading();
+                }
+            });
+        }
+        return false;
+    }
+
     function deleteProductCategory(that){
         tedu.confirm('Bạn chắc chắn muốn xoá?', function () {
             $.ajax({
                 type: "POST",
-                url: "/Admin/ProductCategory/Delete",
+                url: "/Admin/ProductCategory/DeleteAsync",
                 data: { id: that },
                 dataType: "json",
                 beforeSend: function () {
@@ -229,90 +237,6 @@
                 if (selectedId != undefined) {
                     $('#ddlCategoryIdM').combotree('setValue', selectedId);
                 }
-            }
-        });
-    }
-
-    function loadData1() {
-        $.ajax({
-            url: '/Admin/ProductCategory/GetAll',
-            dataType: 'json',
-            success: function (response) {
-                var data = [];
-                $.each(response, function (i, item) {
-                    data.push({
-                        id: item.Id,
-                        text: item.Name,
-                        parentId: item.ParentId,
-                        sortOrder: item.SortOrder
-                    });
-
-                });
-                var treeArr = tedu.unflattern(data);
-                treeArr.sort(function (a, b) {
-                    return a.sortOrder - b.sortOrder;
-                });
-                //var $tree = $('#treeProductCategory');
-
-                $('#treeProductCategory').tree({
-                    data: treeArr,
-                    dnd: true,
-                    onContextMenu: function (e, node) {
-                        e.preventDefault();
-                        // select the node
-                        //$('#tt').tree('select', node.target);
-                        $('#hidIdM').val(node.id);
-                        // display context menu
-                        $('#contextMenu').menu('show', {
-                            left: e.pageX,
-                            top: e.pageY
-                        });
-                    },
-                    onDrop: function (target, source, point) {
-                        console.log(target);
-                        console.log(source);
-                        console.log(point);
-                        var targetNode = $(this).tree('getNode', target);
-                        if (point === 'append') {
-                            var children = [];
-                            $.each(targetNode.children, function (i, item) {
-                                children.push({
-                                    key: item.id,
-                                    value: i
-                                });
-                            });
-
-                            //Update to database
-                            $.ajax({
-                                url: '/Admin/ProductCategory/UpdateParentId',
-                                type: 'post',
-                                dataType: 'json',
-                                data: {
-                                    sourceId: source.id,
-                                    targetId: targetNode.id,
-                                    items: children
-                                },
-                                success: function (res) {
-                                    loadData();
-                                }
-                            });
-                        }
-                        else if (point === 'top' || point === 'bottom') {
-                            $.ajax({
-                                url: '/Admin/ProductCategory/ReOrder',
-                                type: 'post',
-                                dataType: 'json',
-                                data: {
-                                    sourceId: source.id,
-                                    targetId: targetNode.id
-                                },
-                                success: function (res) {
-                                    loadData();
-                                }
-                            });
-                        }
-                    }
-                });
             }
         });
     }

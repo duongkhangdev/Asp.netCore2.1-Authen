@@ -54,92 +54,11 @@
         $('body').on('click', '.btn-edit', function (e) {
             e.preventDefault();
             var that = $(this).data('id');
-            $.ajax({
-                type: "GET",
-                url: "/Admin/User/GetById",
-                data: { id: that },
-                dataType: "json",
-                beforeSend: function () {
-                    tedu.startLoading();
-                },
-                success: function (response) {
-                    var data = response;
-                    $('#hidId').val(data.Id);
-                    $('#txtFullName').val(data.FullName);
-                    $('#txtUserName').val(data.UserName);
-                    $('#txtEmail').val(data.Email);
-                    $('#txtPhoneNumber').val(data.PhoneNumber);
-                    $('#txtAddress').val(data.Address);
-                    $('#txtCity').val(data.City);
-                    $('#ckStatus').prop('checked', data.Status === 1);
-
-                    initRoleList(data.Roles);
-
-                    disableFieldEdit(true);
-                    $('#modal-add-edit').modal('show');
-                    tedu.stopLoading();
-
-                },
-                error: function () {
-                    tedu.notify('Có lỗi xảy ra', 'error');
-                    tedu.stopLoading();
-                }
-            });
+            loadDetails(that);
         });
 
         $('#btnSave').on('click', function (e) {
-            if ($('#frmMaintainance').valid()) {
-                e.preventDefault();
-
-                var id = $('#hidId').val();
-                var fullName = $('#txtFullName').val();
-                var userName = $('#txtUserName').val();
-                var password = $('#txtPassword').val();
-                var email = $('#txtEmail').val();
-                var phoneNumber = $('#txtPhoneNumber').val();
-                var address = $('#txtAddress').val();
-                var city = $('#txtCity').val();
-                var roles = [];
-                $.each($('input[name="ckRoles"]'), function (i, item) {
-                    if ($(item).prop('checked') === true)
-                        roles.push($(item).prop('value'));
-                });
-                var status = $('#ckStatus').prop('checked') == true ? 1 : 0;
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Admin/User/SaveEntity",
-                    data: {
-                        Id: id,
-                        FullName: fullName,
-                        UserName: userName,
-                        Password: password,
-                        Email: email,
-                        PhoneNumber: phoneNumber,
-                        Address: address,
-                        City: city,
-                        Status: status,
-                        Roles: roles
-                    },
-                    dataType: "json",
-                    beforeSend: function () {
-                        tedu.startLoading();
-                    },
-                    success: function () {
-                        tedu.notify('Lưu dữ liệu thành công', 'success');
-                        $('#modal-add-edit').modal('hide');
-                        resetFormMaintainance();
-
-                        tedu.stopLoading();
-                        loadData(true);
-                    },
-                    error: function () {
-                        tedu.notify('Có lỗi xảy ra', 'error');
-                        tedu.stopLoading();
-                    }
-                });
-            }
-            return false;
+            saveUser(e);
         });
 
         $('body').on('click', '.btn-delete', function (e) {
@@ -149,11 +68,100 @@
         });
     };
 
+    function loadDetails(that) {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/User/GetByIdAsync",
+            data: { id: that },
+            dataType: "json",
+            beforeSend: function () {
+                tedu.startLoading();
+            },
+            success: function (response) {
+                var data = response;
+                $('#hidId').val(data.Id);
+                $('#txtFullName').val(data.FullName);
+                $('#txtUserName').val(data.UserName);
+                $('#txtEmail').val(data.Email);
+                $('#txtPhoneNumber').val(data.PhoneNumber);
+                $('#txtAddress').val(data.Address);
+                $('#txtCity').val(data.City);
+                $('#ckStatus').prop('checked', data.Status === 1);
+
+                initRoleList(data.Roles);
+
+                disableFieldEdit(true);
+                $('#modal-add-edit').modal('show');
+                tedu.stopLoading();
+
+            },
+            error: function () {
+                tedu.notify('Có lỗi xảy ra', 'error');
+                tedu.stopLoading();
+            }
+        });
+    }
+
+    function saveUser(e) {
+        if ($('#frmMaintainance').valid()) {
+            e.preventDefault();
+
+            var id = $('#hidId').val();
+            var fullName = $('#txtFullName').val();
+            var userName = $('#txtUserName').val();
+            var password = $('#txtPassword').val();
+            var email = $('#txtEmail').val();
+            var phoneNumber = $('#txtPhoneNumber').val();
+            var address = $('#txtAddress').val();
+            var city = $('#txtCity').val();
+            var roles = [];
+            $.each($('input[name="ckRoles"]'), function (i, item) {
+                if ($(item).prop('checked') === true)
+                    roles.push($(item).prop('value'));
+            });
+            var status = $('#ckStatus').prop('checked') == true ? 1 : 0;
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/User/SaveEntityAsync",
+                data: {
+                    Id: id,
+                    FullName: fullName,
+                    UserName: userName,
+                    Password: password,
+                    Email: email,
+                    PhoneNumber: phoneNumber,
+                    Address: address,
+                    City: city,
+                    Status: status,
+                    Roles: roles
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    tedu.startLoading();
+                },
+                success: function () {
+                    tedu.notify('Lưu dữ liệu thành công', 'success');
+                    $('#modal-add-edit').modal('hide');
+                    resetFormMaintainance();
+
+                    tedu.stopLoading();
+                    loadData(true);
+                },
+                error: function () {
+                    tedu.notify('Có lỗi xảy ra', 'error');
+                    tedu.stopLoading();
+                }
+            });
+        }
+        return false;
+    }
+
     function deleteUser(that) {
         tedu.confirm('Bạn có chắc chắn muốn xoá?', function () {
             $.ajax({
                 type: "POST",
-                url: "/Admin/User/Delete",
+                url: "/Admin/User/DeleteAsync",
                 data: { id: that },
                 dataType: "json",
                 beforeSend: function () {
@@ -199,7 +207,7 @@
 
     function initRoleList(selectedRoles) {
         $.ajax({
-            url: "/Admin/Role/GetAll",
+            url: "/Admin/Role/GetAllAsync",
             type: 'GET',
             dataType: 'json',
             async: false,
@@ -226,7 +234,7 @@
     function loadData(isPageChanged) {
         $.ajax({
             type: "GET",
-            url: "/admin/user/GetAllPaging",
+            url: "/admin/user/GetAllPagingAsync",
             data: {
                 categoryId: '',
                 keyword: $('#txtKeyword').val(),

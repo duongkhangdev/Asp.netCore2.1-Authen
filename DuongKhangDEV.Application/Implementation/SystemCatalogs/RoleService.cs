@@ -43,7 +43,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             return result.Succeeded;
         }
 
-        public Task<bool> CheckPermission(string functionId, string action, string[] roles)
+        public virtual async Task<bool> CheckPermissionAsync(string functionId, string action, string[] roles)
         {
             var functions = _functionRepository.GetAll();
             var permissions = _permissionRepository.GetAll();
@@ -56,7 +56,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
                         || (p.CanDelete && action == "Delete")
                         || (p.CanRead && action == "Read"))
                         select p;
-            return query.AnyAsync();
+            return await query.AnyAsync();
         }
 
         public async Task DeleteAsync(Guid id)
@@ -70,7 +70,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             return await _roleManager.Roles.ProjectTo<AppRoleViewModel>().ToListAsync();
         }
 
-        public PagedResult<AppRoleViewModel> GetAllPagingAsync(string keyword, int page, int pageSize)
+        public virtual async Task<PagedResult<AppRoleViewModel>> GetAllPagingAsync(string keyword, int page, int pageSize)
         {
             var query = _roleManager.Roles;
             if (!string.IsNullOrEmpty(keyword))
@@ -81,7 +81,8 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             query = query.Skip((page - 1) * pageSize)
                .Take(pageSize);
 
-            var data = query.ProjectTo<AppRoleViewModel>().ToList();
+            var data = await query.ProjectTo<AppRoleViewModel>().ToListAsync();
+
             var paginationSet = new PagedResult<AppRoleViewModel>()
             {
                 Results = data,
@@ -93,13 +94,13 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             return paginationSet;
         }
 
-        public async Task<AppRoleViewModel> GetById(Guid id)
+        public async Task<AppRoleViewModel> GetByIdAsync(Guid id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
             return Mapper.Map<AppRole, AppRoleViewModel>(role);
         }
 
-        public List<PermissionViewModel> GetListFunctionWithRole(Guid roleId)
+        public async Task<List<PermissionViewModel>> GetListFunctionWithRoleAsync(Guid roleId)
         {
             var functions = _functionRepository.GetAll();
             var permissions = _permissionRepository.GetAll();
@@ -117,7 +118,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
                             CanRead = p != null ? p.CanRead : false,
                             CanUpdate = p != null ? p.CanUpdate : false
                         };
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
         public void SavePermission(List<PermissionViewModel> permissionVms, Guid roleId)

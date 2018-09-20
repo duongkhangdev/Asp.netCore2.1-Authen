@@ -66,26 +66,7 @@
         });
 
         $("#fileInputImage").on('change', function () {
-            var fileUpload = $(this).get(0);
-            var files = fileUpload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                data.append(files[i].name, files[i]);
-            }
-            $.ajax({
-                type: "POST",
-                url: "/Admin/Upload/UploadImage",
-                contentType: false,
-                processData: false,
-                data: data,
-                success: function (path) {
-                    $('#txtImage').val(path);
-                    tedu.notify('Đã tải ảnh lên thành công!', 'success');
-                },
-                error: function () {
-                    tedu.notify('Đã xảy ra lỗi khi tải file lên!', 'error');
-                }
-            });
+            fileInputImage();
         });
 
         $('body').on('click', '.btn-edit', function (e) {
@@ -115,48 +96,81 @@
         });
 
         $('#btnImportExcel').on('click', function () {
-            var fileUpload = $("#fileInputExcel").get(0);
-            var files = fileUpload.files;
-
-            // Create FormData object  
-            var fileData = new FormData();
-            // Looping over all files and add it to FormData object  
-            for (var i = 0; i < files.length; i++) {
-                fileData.append("files", files[i]);
-            }
-
-            // Adding one more key to FormData object  
-            fileData.append('categoryId', $('#ddlCategoryIdImportExcel').combotree('getValue'));
-            $.ajax({
-                url: '/Admin/Product/ImportExcel',
-                type: 'POST',
-                data: fileData,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,  // tell jQuery not to set contentType
-                success: function (data) {
-                    $('#modal-import-excel').modal('hide');
-                    loadData();
-                }
-            });
-            return false;
+            ImportExcel();
         });
 
         $('#btn-export').on('click', function () {
-            $.ajax({
-                type: "POST",
-                url: "/Admin/Product/ExportExcel",
-                beforeSend: function () {
-                    tedu.startLoading();
-                },
-                success: function (response) {
-                    window.location.href = response;
-                    tedu.stopLoading();
-                },
-                error: function () {
-                    tedu.notify('Has an error in progress', 'error');
-                    tedu.stopLoading();
-                }
-            });
+            ExportExcel();
+        });
+    }
+
+    function fileInputImage()
+    {
+        var fileUpload = $(this).get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Upload/UploadImage",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (path) {
+                $('#txtImage').val(path);
+                tedu.notify('Đã tải ảnh lên thành công!', 'success');
+            },
+            error: function () {
+                tedu.notify('Đã xảy ra lỗi khi tải file lên!', 'error');
+            }
+        });
+    }
+
+    function ImportExcel() {
+        var fileUpload = $("#fileInputExcel").get(0);
+        var files = fileUpload.files;
+
+        // Create FormData object  
+        var fileData = new FormData();
+        // Looping over all files and add it to FormData object  
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("files", files[i]);
+        }
+
+        // Adding one more key to FormData object  
+        fileData.append('categoryId', $('#ddlCategoryIdImportExcel').combotree('getValue'));
+        $.ajax({
+            url: '/Admin/Product/ImportExcel',
+            type: 'POST',
+            data: fileData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+                $('#modal-import-excel').modal('hide');
+                loadData();
+            }
+        });
+        return false;
+    }
+
+    function ExportExcel() {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Product/ExportExcelAsync",
+            beforeSend: function () {
+                tedu.startLoading();
+            },
+            success: function (response) {
+                window.location.href = response;
+                tedu.notify('Đã xuất file thành công!', 'success');
+                tedu.stopLoading();
+            },
+            error: function () {
+                tedu.notify('Đã xảy ra lỗi khi xuất file', 'error');
+                tedu.stopLoading();
+            }
         });
     }
 
@@ -213,7 +227,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Admin/Product/SaveEntity",
+                url: "/Admin/Product/SaveEntityAsync",
                 data: {
                     Id: id,
                     Name: name,
@@ -292,7 +306,7 @@
     function loadDetails(that) {        
         $.ajax({
             type: "GET",
-            url: "/Admin/Product/GetById",
+            url: "/Admin/Product/GetByIdAsync",
             data: { id: that },
             dataType: "json",
             beforeSend: function () {
@@ -504,7 +518,7 @@
 
     function initTreeDropDownCategorySearch(selectedId) {
         $.ajax({
-            url: '/admin/product/GetAllCategories',
+            url: '/admin/productcategory/GetAllAsync',
             type: 'GET',
             dataType: 'json',
             async: false,
@@ -531,7 +545,7 @@
 
     function initTreeDropDownCategory(selectedId) {
         $.ajax({
-            url: '/admin/product/GetAllCategories',
+            url: '/admin/productcategory/GetAllAsync',
             type: 'GET',
             dataType: 'json',
             async: false,

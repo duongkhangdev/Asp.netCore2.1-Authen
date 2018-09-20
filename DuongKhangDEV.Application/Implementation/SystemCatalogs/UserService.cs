@@ -35,13 +35,15 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
                 DateCreated = DateTime.Now,
                 PhoneNumber = userVm.PhoneNumber
             };
+
             var result = await _userManager.CreateAsync(user, userVm.Password);
             if (result.Succeeded && userVm.Roles.Count > 0)
             {
                 var appUser = await _userManager.FindByNameAsync(user.UserName);
                 if (appUser != null)
+                {
                     await _userManager.AddToRolesAsync(appUser, userVm.Roles);
-
+                }
             }
             return true;
         }
@@ -57,7 +59,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             return await _userManager.Users.ProjectTo<AppUserViewModel>().ToListAsync();
         }
 
-        public PagedResult<AppUserViewModel> GetAllPagingAsync(string keyword, int page, int pageSize)
+        public virtual async Task<PagedResult<AppUserViewModel>> GetAllPagingAsync(string keyword, int page, int pageSize)
         {
             var query = _userManager.Users;
             if (!string.IsNullOrEmpty(keyword))
@@ -69,7 +71,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             query = query.Skip((page - 1) * pageSize)
                .Take(pageSize);
 
-            var data = query.Select(x => new AppUserViewModel()
+            var data = await query.Select(x => new AppUserViewModel()
             {
                 UserName = x.UserName,
                 Avatar = x.Avatar,
@@ -81,7 +83,8 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
                 Status = x.Status,
                 DateCreated = x.DateCreated
 
-            }).ToList();
+            }).ToListAsync();
+
             var paginationSet = new PagedResult<AppUserViewModel>()
             {
                 Results = data,
@@ -93,7 +96,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             return paginationSet;
         }
 
-        public async Task<AppUserViewModel> GetById(string id)
+        public async Task<AppUserViewModel> GetByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var roles = await _userManager.GetRolesAsync(user);
@@ -108,8 +111,7 @@ namespace DuongKhangDEV.Application.Implementation.SystemCatalog
             //Remove current roles in db
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            var result = await _userManager.AddToRolesAsync(user,
-                userVm.Roles.Except(currentRoles).ToArray());
+            var result = await _userManager.AddToRolesAsync(user, userVm.Roles.Except(currentRoles).ToArray());
 
             if (result.Succeeded)
             {

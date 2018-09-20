@@ -25,7 +25,7 @@ namespace DuongKhangDEV.WebApp.Authorization
             if (roles != null)
             {
                 var listRole = roles.Value.Split(";");
-                var hasPermission = await _roleService.CheckPermission(resource, requirement.Name, listRole);
+                var hasPermission = await _roleService.CheckPermissionAsync(resource, requirement.Name, listRole);
                 if (hasPermission || listRole.Contains(CommonConstants.AppRole.AdminRole))
                 {
                     context.Succeed(requirement);
